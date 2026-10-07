@@ -23,7 +23,8 @@ const EXCESSIVE_REPEAT = /(.)\1{5,}/u;
 const PERSON_NAME = /^[\p{L}\p{M} .\-'’・]+$/u;
 const DISPLAY_NAME = /^[\p{L}\p{M}\p{N} ._\-'’・]+$/u;
 const LINE_ID = /^[A-Za-z0-9._-]{4,20}$/;
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const EMAIL_LOCAL_PART = /^[A-Za-z0-9.!#$%&'*+\/=?^_`{|}~-]+$/;
+const EMAIL_DOMAIN_LABEL = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/;
 
 function normalizeText(value: unknown) {
   return String(value ?? '').normalize('NFC').trim();
@@ -43,7 +44,7 @@ export function normalizeRegistrationFields(values: Partial<Record<keyof Registr
 }
 
 export function isValidTaiwanNationalId(value: string) {
-  if (!/^[A-Z][0-9]{9}$/.test(value)) return false;
+  if (!/^[A-Z][12][0-9]{8}$/.test(value)) return false;
 
   const letterCode = TAIWAN_ID_LETTER_CODES[value[0]];
   if (!letterCode) return false;
@@ -54,6 +55,23 @@ export function isValidTaiwanNationalId(value: string) {
     + digits[8];
 
   return total % 10 === 0;
+}
+
+function isValidEmail(value: string) {
+  // Check common unquoted email syntax only, not domain or mailbox existence.
+  if (value.length > 254 || UNSAFE_TEXT.test(value)) return false;
+
+  const parts = value.split('@');
+  if (parts.length !== 2) return false;
+  const [localPart, domain] = parts;
+  if (!localPart || localPart.length > 64 || !EMAIL_LOCAL_PART.test(localPart)
+    || localPart.startsWith('.') || localPart.endsWith('.') || localPart.includes('..')) {
+    return false;
+  }
+
+  const labels = domain.split('.');
+  return labels.length >= 2 && labels[labels.length - 1].length >= 2
+    && labels.every((label) => EMAIL_DOMAIN_LABEL.test(label));
 }
 
 export function validateRegistrationFields(rawValues: Partial<Record<keyof RegistrationFields, unknown>>): RegistrationErrors {
@@ -82,7 +100,7 @@ export function validateRegistrationFields(rawValues: Partial<Record<keyof Regis
 
   if (!values.email) {
     errors.email = '請填寫 Email。';
-  } else if (values.email.length > 254 || !EMAIL.test(values.email) || values.email.includes('..') || UNSAFE_TEXT.test(values.email)) {
+  } else if (!isValidEmail(values.email)) {
     errors.email = '請輸入有效的 Email，例如 name@example.com。';
   }
 
