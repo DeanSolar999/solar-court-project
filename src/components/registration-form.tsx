@@ -15,10 +15,10 @@ export function RegistrationEntry({ state }: { state: RegistrationState }) {
         <AlertTitle className="font-black">{state.message}</AlertTitle>
         <AlertDescription className="leading-6 text-amber-900/75">
           {state.status === 'preparing'
-            ? '首波日期與部分活動規則已確認；獎品價值、付款與扣繳資料、資料利用地區仍待補齊。完整辦法公告並完成表單驗收後才開放，開始日期另行公告，目前請勿提供個人資料。'
+            ? '目前仍在確認帳號代辦授權流程；完成最終告知及正式開放驗收後，才會開放入口。請勿透過此公告頁提供個人資料。'
             : state.status === 'closed'
               ? '登記入口已關閉。如需查詢既有登記或行使個資權利，請聯絡資料管理負責人。'
-              : '請在 Google 託管表單完成填寫與同意，並確認收到收件回條。'}
+              : '請在 Google 託管表單填寫資料，再閱讀完整告知文件並捲動至底部，主動勾選四項同意後送出，以收件回條確認結果。'}
         </AlertDescription>
       </Alert>
 
@@ -28,15 +28,25 @@ export function RegistrationEntry({ state }: { state: RegistrationState }) {
         <p className="mt-3 text-sm font-medium leading-7 text-ink/60">這個 GitHub 頁面只提供活動公告與登記入口，不提供個資輸入欄位。正式登記會在獨立的 Google 託管表單填寫，由曜日羽球團透過 Google 服務處理並儲存於非公開名單。</p>
         <div className="mt-5 flex items-start gap-3 rounded-2xl border border-green/15 bg-green/5 p-4">
           <CalendarDays className="mt-0.5 size-5 shrink-0 text-green" />
-          <div className="text-sm leading-6"><strong className="block text-ink">場地協助登記至 {REGISTRATION_DEADLINE_TEXT}</strong><p className="mt-1 font-medium text-ink/60">開始日以完整辦法公告、表單驗收及正式上線為準。{state.status === 'preparing' ? '目前尚未開放。' : state.status === 'closed' ? '登記期間已結束。' : ''}</p></div>
+          <div className="text-sm leading-6"><strong className="block text-ink">場地協助登記至 {REGISTRATION_DEADLINE_TEXT}</strong><p className="mt-1 font-medium text-ink/60">{state.status === 'preparing' ? '表單驗收完成並正式上線後開放，目前尚未收件。' : state.status === 'closed' ? '登記期間已結束。' : '已開放登記，請由下方入口前往 Google 託管表單。'}</p></div>
         </div>
         <p className="mt-3 text-sm font-medium leading-7 text-ink/65">首波抽獎資格截至 {FIRST_DRAW_ELIGIBILITY_DEADLINE_TEXT}，抽獎日為 {FIRST_DRAW_DATE_TEXT}。資格截止後仍可協助場地登記，但不列入首波抽獎名單。<a href="#draw-rules-heading" className="ml-1 font-bold text-green underline underline-offset-4">查看抽獎與領獎辦法</a></p>
         <p className="mt-3 text-sm font-medium leading-7 text-ink/65">{FIRST_DRAW_QUALIFICATION_TEXT}</p>
+        <div className="mt-5 rounded-2xl border border-green/20 bg-green/5 p-4 sm:p-5">
+          <h4 className="text-base font-black text-green">填寫 → 閱讀全文 → 確認同意 → 送出</h4>
+          <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm font-medium leading-7 text-ink/70">
+            <li>先填寫必填資料，資料通過格式檢查後，進入完整告知文件。</li>
+            <li>閱讀同一份文件中的 10 項個資與授權告知、適用場館及活動辦法，並捲動至文件底部。</li>
+            <li>自行確認四項授權與活動規則後，才可送出；不會預先替你勾選。</li>
+            <li>以 Google 表單回傳的收件回條確認登記成功。</li>
+          </ol>
+          <p className="mt-3 text-xs font-medium leading-6 text-ink/60">捲動至底部只是填寫流程的一部分，不代表已同意；若有疑問，請先聯絡球團再決定是否送出。</p>
+        </div>
       </section>
 
       <section aria-labelledby="registration-fields-heading" className="border-t border-ink/10 pt-6">
         <h4 id="registration-fields-heading" className="flex items-center gap-2 text-base font-black"><FileCheck2 className="size-5 text-green" />正式表單需要的資料</h4>
-        <p className="mt-3 text-sm font-medium leading-6 text-ink/60">以下 7 項為必填，請於正式開放後在 Google 託管表單填寫：</p>
+        <p className="mt-3 text-sm font-medium leading-6 text-ink/60">以下 7 項為必填，請在 Google 託管表單填寫：</p>
         <ul className="mt-4 grid gap-2 sm:grid-cols-2">
           {requiredFields.map((field, index) => (
             <li key={field} className="flex items-center gap-2.5 rounded-xl bg-white px-3 py-3 text-sm font-bold text-ink/75"><span className="grid size-5 shrink-0 place-items-center rounded-full bg-lime/70 font-mono text-[10px] text-ink" aria-hidden="true">{index + 1}</span>{field}</li>
@@ -47,7 +57,7 @@ export function RegistrationEntry({ state }: { state: RegistrationState }) {
 
       <section aria-labelledby="registration-consents-heading" className="border-t border-ink/10 pt-6">
         <h4 id="registration-consents-heading" className="flex items-center gap-2 text-base font-black"><ShieldCheck className="size-5 text-green" />在正式表單確認四項同意</h4>
-        <p className="mt-3 text-sm font-medium leading-7 text-ink/65">以下是同意內容預覽，不是在此頁勾選。正式開放後，請在 Google 託管表單閱讀並主動勾選；不會預先替你同意。</p>
+        <p className="mt-3 text-sm font-medium leading-7 text-ink/65">以下是同意內容預覽，不是在此頁勾選。請在 Google 託管表單閱讀完整文件並捲動至底部，再主動勾選；不會預先替你同意。</p>
         <ol className="mt-4 space-y-3 text-sm text-ink/70">
           {CONSENT_ITEMS.map((consent, index) => (
             <li key={consent.key} className="rounded-xl border border-ink/10 bg-white p-4">

@@ -15,7 +15,7 @@ const ready: RegistrationConfig = {
   open: true,
   formUrl: exampleUrl,
   formUrlVerified: true,
-  rulesFinalized: true,
+  publicNoticeApproved: true,
   startsAt: '2027-01-15T09:00:00+08:00',
 };
 const duringCollection = Date.parse('2027-06-01T12:00:00+08:00');
@@ -24,7 +24,7 @@ test('the prepared release is closed without a URL or an invented start date', (
   assert.equal(REGISTRATION_CONFIG.open, false);
   assert.equal(REGISTRATION_CONFIG.formUrl, '');
   assert.equal(REGISTRATION_CONFIG.formUrlVerified, false);
-  assert.equal(REGISTRATION_CONFIG.rulesFinalized, false);
+  assert.equal(REGISTRATION_CONFIG.publicNoticeApproved, false);
   assert.equal(REGISTRATION_CONFIG.startsAt, null);
   assert.deepEqual(getRegistrationState(REGISTRATION_CONFIG, duringCollection), {
     status: 'preparing', formUrl: null, message: REGISTRATION_PREPARING_TEXT,
@@ -33,7 +33,7 @@ test('the prepared release is closed without a URL or an invented start date', (
 
 test('each release requirement independently keeps the registration link closed', () => {
   for (const change of [
-    { open: false }, { formUrl: '' }, { formUrlVerified: false }, { rulesFinalized: false },
+    { open: false }, { formUrl: '' }, { formUrlVerified: false }, { publicNoticeApproved: false },
     { startsAt: null }, { startsAt: 'not-a-date' }, { startsAt: '2027-01-15T09:00:00' },
     { startsAt: '2028-01-01T00:00:00+08:00' },
   ]) {

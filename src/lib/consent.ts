@@ -1,4 +1,4 @@
-export const CONSENT_VERSION = '2027-v13-2026-10-12';
+export const CONSENT_VERSION = '2027-v14-2026-10-12';
 
 export const CONTACTS = {
   registrationSystemName: '🏸 曜日羽球｜臨打報名系統',
@@ -82,11 +82,17 @@ export const PRIVACY_RIGHTS = [
   '請求刪除。',
 ] as const;
 
+export const PRIVACY_POLICY_SOURCES = [
+  { label: 'Google 隱私權政策：資料移轉', url: 'https://policies.google.com/privacy?hl=zh-TW' },
+  { label: 'LINE 營運者隱私權政策：跨境移轉', url: 'https://www.lycorp.co.jp/en/company/privacypolicy/' },
+  { label: 'GitHub 隱私權聲明：國際資料移轉', url: 'https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement' },
+] as const;
+
 export const PRIVACY_NOTICE_ITEMS = [
   {
     id: 'collection-platform',
     title: '登記頁面與資料儲存',
-    paragraphs: ['GitHub Pages 活動網站只提供活動公告與登記入口，不提供個資輸入欄位。正式開放後，由獨立的 Google 託管表單承接填寫與送出；曜日羽球團透過 Google 服務處理資料，並儲存於非公開 Google Sheet，供授權管理人員依告知目的使用。'],
+    paragraphs: ['GitHub Pages 活動網站只提供活動公告與登記入口，不提供個資輸入欄位。報名資料由獨立的 Google 託管表單承接填寫與送出；曜日羽球團透過 Google 服務處理資料，並儲存於非公開 Google Sheet，供授權管理人員依告知目的使用。填寫後，請閱讀完整告知文件並捲動至底部，再主動確認四項同意後送出；捲動到文件底部不等於同意，也不能證明已理解內容。'],
   },
   {
     id: 'collector',
@@ -107,8 +113,9 @@ export const PRIVACY_NOTICE_ITEMS = [
     title: '利用期間、地區與到期處理',
     paragraphs: [
       '一般利用期間為授權日起至 2027 年 12 月 31 日。期限屆滿後停止一般使用並刪除或去識別化；法律、會計稅務或爭議處理確有保存必要時，僅在必要期間及目的內保留，不再用於新的場地申請。備份資料依適用刪除流程處理，不再供日常使用。',
-      '活動申請與聯絡主要在臺灣辦理。Google、LINE 及 GitHub 等服務的資料傳輸、處理或備份可能涉及境外；實際利用地區與保存安排尚未完成核對，將在開放收件前補齊告知。目前尚未開放收件，不以「全球」代替尚未核實的地區資訊。',
+      '活動申請、管理人員作業與聯絡主要在臺灣。報名資料存放於 Google Sheet，並由 Google Apps Script 處理；Google 隱私權政策說明其伺服器遍布全球，可能在臺灣以外處理資料，本活動未指定單一資料儲存國家。LINE 聯絡及人工補充授權所涉及資料，可能依 LINE 營運者政策移轉至日本、美國、韓國、加拿大、菲律賓、澳洲、越南、泰國、臺灣、印尼、新加坡、瑞士、英國及歐洲經濟區。GitHub Pages 僅提供活動頁，不接收表單欄位；瀏覽活動頁產生的連線紀錄可能由 GitHub 在美國及其他營運所在地處理。上述為服務商公開政策所揭露的處理範圍，不表示每筆資料均傳輸至所有地區。',
     ],
+    sourceLinks: PRIVACY_POLICY_SOURCES,
   },
   {
     id: 'recipients-and-methods',

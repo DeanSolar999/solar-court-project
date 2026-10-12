@@ -90,7 +90,7 @@ export default function Home() {
       </header>
 
       <div className="border-b border-amber-300 bg-amber-50 px-5 py-3 text-center text-sm font-bold leading-6 text-amber-950">
-        {registrationState.message}。{registrationState.status === 'preparing' ? '完整活動辦法公告並完成表單驗收後才開放，開始日期另行公告。' : '填寫與送出由 Google 託管表單承接。'}
+        {registrationState.message}。{registrationState.status === 'preparing' ? '確認帳號代辦授權流程並完成正式開放驗收後，才會開放入口。' : '請在 Google 託管表單填寫、閱讀完整告知並確認同意後送出。'}
       </div>
 
       <section id="top" className="relative isolate border-b border-ink/10">
@@ -242,7 +242,7 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <div className="mt-5 flex items-start gap-2 rounded-2xl bg-cream px-4 py-4 text-sm font-medium leading-6 text-ink/65"><Info className="mt-1 size-4 shrink-0 text-green" /><p>球拍型號與首波抽獎日期已確認；其餘獎品的品牌與型號、各獎品價值、付款與扣繳資料仍待定案，將於正式開放前公告。目前保持關閉，尚未開放收件。「頂級」與「高級」為活動品項名稱。</p></div>
+          <div className="mt-5 flex items-start gap-2 rounded-2xl bg-cream px-4 py-4 text-sm font-medium leading-6 text-ink/65"><Info className="mt-1 size-4 shrink-0 text-green" /><p>球拍型號與首波抽獎日期已確認；其餘獎品的品牌與型號、各獎品價值、付款與扣繳資料仍待定案，將另行公告。「頂級」與「高級」為活動品項名稱。</p></div>
         </div>
       </section>
 
@@ -256,8 +256,8 @@ export default function Home() {
             </div>
             <div className="grid gap-3">
               {[
-                { no: '01', icon: FileCheck2, title: '前往正式表單填寫', text: '正式開放後，至 Google 託管表單填寫本名、身分證字號、手機號碼、Email、LINE ID、暱稱及場館帳號註冊狀態；推薦人暱稱或推薦碼為選填。' },
-                { no: '02', icon: Building2, title: '確認四項授權並送出', text: '閱讀完整告知、13 個適用場館與活動辦法，主動勾選四項確認並成功送出，以收件回條確認結果。於首波資格截止前完成，即可參加抽獎，不必先抽中場地。' },
+                { no: '01', icon: FileCheck2, title: '前往正式表單填寫', text: '至 Google 託管表單填寫本名、身分證字號、手機號碼、Email、LINE ID、暱稱及場館帳號註冊狀態；推薦人暱稱或推薦碼為選填。' },
+                { no: '02', icon: Building2, title: '閱讀完整文件，確認同意後送出', text: '填好資料後，閱讀 10 項個資與授權告知、13 個適用場館與活動辦法，捲動至文件底部，再主動勾選四項確認並送出。於首波資格截止前完成並取得收件回條，即可參加抽獎，不必先抽中場地。' },
                 { no: '03', icon: UserCheck, title: '場地中籤後，配合登記領獎金', text: '這是後續場地協助，不是首波抽獎資格的前提。抽中場地後，由本人依通知完成驗證、繳費、簽約與切結；完成登記並核對後，再依規則領取場地協助獎金。' },
               ].map((step) => (
                 <article key={step.no} className="group grid gap-5 rounded-[1.8rem] border border-ink/10 bg-white p-6 transition-transform hover:-translate-y-1 sm:grid-cols-[70px_1fr_auto] sm:items-center sm:p-7">
@@ -343,6 +343,7 @@ export default function Home() {
                 <summary className="cursor-pointer py-4 text-base font-black text-ink sm:text-lg">{item.title}</summary>
                 <div className="space-y-3 pb-5 text-sm font-medium leading-7 text-ink/70">
                   {item.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                  {'sourceLinks' in item && <div className="border-t border-ink/10 pt-3"><p className="font-bold text-ink">服務商公開政策</p><ul className="mt-2 space-y-2">{item.sourceLinks.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer" className="text-green underline underline-offset-4">{source.label}</a></li>)}</ul></div>}
                 </div>
               </details>
             ))}

@@ -11,6 +11,7 @@ import {
   CROSS_VENUE_NOTICE_TEXT,
   FIRST_DRAW_QUALIFICATION_TEXT,
   PRIVACY_NOTICE_ITEMS,
+  PRIVACY_POLICY_SOURCES,
   PRIVACY_RIGHTS,
   REVOCATION_NOTICE,
   SCOPE_CONSENT_TEXT,
@@ -23,7 +24,7 @@ const entry = readFileSync(new URL('../src/components/registration-form.tsx', im
 const contactComponent = readFileSync(new URL('../src/components/authorization-contact-links.tsx', import.meta.url), 'utf8');
 
 test('pins a new notice version and preserves four independent consent texts', () => {
-  assert.equal(CONSENT_VERSION, '2027-v13-2026-10-12');
+  assert.equal(CONSENT_VERSION, '2027-v14-2026-10-12');
   assert.deepEqual(CONSENT_ITEMS.map(({ key }) => key), ['privacy', 'scope', 'account', 'rules']);
   assert.equal(new Set(CONSENT_ITEMS.map(({ text }) => text)).size, 4);
   for (const item of CONSENT_ITEMS) assert.ok(item.title && item.summary && item.text);
@@ -67,7 +68,7 @@ test('revocation has two exact contacts and does not promise automatic cancellat
   assert.match(contactComponent, /CONTACTS.lineId/);
 });
 
-test('complete privacy notice lists all five rights and honestly identifies the unverified regions', () => {
+test('complete privacy notice lists all five rights and attributes the providers regional processing scope', () => {
   assert.deepEqual(PRIVACY_RIGHTS, [
     '查詢或請求閱覽。', '請求製給複製本。', '請求補充或更正。',
     '請求停止蒐集、處理或利用。', '請求刪除。',
@@ -77,9 +78,15 @@ test('complete privacy notice lists all five rights and honestly identifies the 
   for (const id of ['collector', 'purpose-and-data', 'period-and-region', 'recipients-and-methods', 'privacy-rights', 'optional-provision']) {
     assert.ok(PRIVACY_NOTICE_ITEMS.find((item) => item.id === id), id);
   }
-  const region = PRIVACY_NOTICE_ITEMS.find(({ id }) => id === 'period-and-region')!.paragraphs.join('');
-  assert.match(region, /尚未完成核對/);
-  assert.match(region, /目前尚未開放收件/);
+  const regionItem = PRIVACY_NOTICE_ITEMS.find(({ id }) => id === 'period-and-region');
+  assert.ok(regionItem && 'sourceLinks' in regionItem);
+  const region = regionItem.paragraphs.join('');
+  assert.match(region, /本活動未指定單一資料儲存國家/);
+  assert.match(region, /不表示每筆資料均傳輸至所有地區/);
+  assert.match(region, /日本、美國、韓國、加拿大/);
+  assert.equal(PRIVACY_POLICY_SOURCES.length, 3);
+  assert.deepEqual(regionItem.sourceLinks, PRIVACY_POLICY_SOURCES);
+  assert.match(page, /item.sourceLinks.map/);
 });
 
 test('publication reuses the canonical notice and makes full text available without local data inputs', () => {
@@ -91,6 +98,15 @@ test('publication reuses the canonical notice and makes full text available with
   assert.match(entry, /href="#privacy"/);
   assert.match(entry, /id="supplemental-notice"/);
   assert.doesNotMatch(page + entry, /<input\b|<textarea\b|<form\b|<Checkbox\b|<RadioGroup\b/);
+});
+
+test('explains the full-document reading stage without treating scrolling as consent', () => {
+  assert.equal(PRIVACY_NOTICE_ITEMS.length, 10);
+  assert.match(entry, /填寫 → 閱讀全文 → 確認同意 → 送出/);
+  assert.match(entry, /捲動至底部只是填寫流程的一部分，不代表已同意/);
+  assert.match(entry, /Google 表單回傳的收件回條/);
+  const platformNotice = PRIVACY_NOTICE_ITEMS.find(({ id }) => id === 'collection-platform')!.paragraphs.join('');
+  assert.match(platformNotice, /捲動到文件底部不等於同意，也不能證明已理解內容/);
 });
 
 test('first raffle qualification needs successful submission and not a prior court win', () => {

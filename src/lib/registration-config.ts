@@ -2,17 +2,18 @@ export type RegistrationConfig = Readonly<{
   open: boolean;
   formUrl: string;
   formUrlVerified: boolean;
-  rulesFinalized: boolean;
+  publicNoticeApproved: boolean;
   startsAt: string | null;
 }>;
 
-// Keep CLOSED until complete rules and the Google-hosted form pass review.
+// Keep CLOSED until the current public notice is approved and the Google-hosted form passes review.
+// Approval covers the disclosed notice; it does not invent still-unannounced prize or tax details.
 // A public deployment URL is permitted here; never add a secret or participant data.
 export const REGISTRATION_CONFIG: RegistrationConfig = Object.freeze({
   open: false,
   formUrl: '',
   formUrlVerified: false,
-  rulesFinalized: false,
+  publicNoticeApproved: false,
   startsAt: null,
 });
 
@@ -43,7 +44,7 @@ export function getRegistrationState(
   const startsAt = config.startsAt && /(?:Z|[+-]\d{2}:\d{2})$/.test(config.startsAt)
     ? Date.parse(config.startsAt) : Number.NaN;
   if (!Number.isFinite(now) || !Number.isFinite(startsAt) || startsAt >= REGISTRATION_CLOSES_AT || now < startsAt
-    || !config.open || !config.formUrlVerified || !config.rulesFinalized || !isAllowedRegistrationUrl(config.formUrl)) {
+    || !config.open || !config.formUrlVerified || !config.publicNoticeApproved || !isAllowedRegistrationUrl(config.formUrl)) {
     return { status: 'preparing', formUrl: null, message: REGISTRATION_PREPARING_TEXT };
   }
   return { status: 'open', formUrl: config.formUrl, message: '正式登記已開放，請前往 Google 託管表單' };
