@@ -89,8 +89,8 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="border-b border-amber-300 bg-amber-50 px-5 py-3 text-center text-sm font-bold leading-6 text-amber-950">
-        {registrationState.message}。{registrationState.status === 'preparing' ? '確認帳號代辦授權流程並完成正式開放驗收後，才會開放入口。' : '請在 Google 託管表單填寫、閱讀完整告知並確認同意後送出。'}
+      <div className={`border-b px-5 py-3 text-center text-sm font-bold leading-6 ${registrationState.status === 'open' ? 'border-green/20 bg-lime/45 text-ink' : 'border-amber-300 bg-amber-50 text-amber-950'}`}>
+        {registrationState.message}。{registrationState.status === 'preparing' ? 'Google 託管表單完成正式開放驗收後，即可由此入口登記。' : '請在 Google 託管表單填寫、閱讀完整告知並確認同意後送出。'}
       </div>
 
       <section id="top" className="relative isolate border-b border-ink/10">

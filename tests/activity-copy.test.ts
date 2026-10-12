@@ -40,12 +40,13 @@ test('retains approved winner and payment rules without inventing a claim start 
   assert.doesNotMatch(page, /回覆後\s*30\s*日/);
 });
 
-test('sharing descriptions disclose both deadlines, the draw day and the closed state', () => {
+test('sharing descriptions disclose both deadlines, the draw day and the open registration entry', () => {
   for (const name of ['description', 'og:description', 'twitter:description']) {
     const tag = metadata.match(new RegExp(`<meta (?:name|property)="${name}" content="([^"]+)"`));
     assert.ok(tag, name);
-    for (const text of ['2026/12/31（台北時間）', '2027/01/10', '場地協助登記至 2027/12/31', '正式登記準備中，尚未開放收件']) {
+    for (const text of ['2026/12/31（台北時間）', '2027/01/10', '場地協助登記至 2027/12/31', '正式登記開放中', 'Google 託管表單']) {
       assert.ok(tag[1].includes(text), `${name}: ${text}`);
     }
   }
+  assert.doesNotMatch(metadata, /正式登記準備中|尚未開放收件/);
 });

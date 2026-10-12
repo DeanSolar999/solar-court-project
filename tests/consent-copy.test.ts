@@ -24,7 +24,7 @@ const entry = readFileSync(new URL('../src/components/registration-form.tsx', im
 const contactComponent = readFileSync(new URL('../src/components/authorization-contact-links.tsx', import.meta.url), 'utf8');
 
 test('pins a new notice version and preserves four independent consent texts', () => {
-  assert.equal(CONSENT_VERSION, '2027-v14-2026-10-12');
+  assert.equal(CONSENT_VERSION, '2027-v15-2026-10-12');
   assert.deepEqual(CONSENT_ITEMS.map(({ key }) => key), ['privacy', 'scope', 'account', 'rules']);
   assert.equal(new Set(CONSENT_ITEMS.map(({ text }) => text)).size, 4);
   for (const item of CONSENT_ITEMS) assert.ok(item.title && item.summary && item.text);
@@ -51,11 +51,12 @@ test('manual supplementary consent requires an explicit reply without reducing o
 
 test('shared-account scope requires operator permission and does not authorize signing or payments', () => {
   const text = ACCOUNT_USE_NOTICE.join('\n');
-  for (const expected of ['以本人名義', '僅於該營運單位規則允許時', '指定管理人員', '2027 年 12 月 31 日', '提前申請終止', '在取得帳號代辦與共同使用同意前', '本表單不收集帳號密碼', '由本人操作', '不包含球團代簽契約或代作金錢承諾']) {
+  for (const expected of ['以本人名義', '僅於該營運單位規則允許時', '指定管理人員', '2027 年 12 月 31 日', '提前申請終止', '本次登記可以先完成', '實際代辦或共同操作帳號前', '取得本人另行明確確認', '未取得確認前，不會代為建立或共同操作帳號', '本表單不收集帳號密碼', '由本人操作', '不包含球團代簽契約或代作金錢承諾']) {
     assert.ok(text.includes(expected), expected);
   }
-  assert.match(ACCOUNT_CREATION_CONSENT_TEXT, /營運單位允許的範圍內/);
-  assert.doesNotMatch(text, /不蒐集或保存任何帳號密碼|已採用加密密碼管理器/);
+  assert.match(ACCOUNT_CREATION_CONSENT_TEXT, /完成確認且營運單位允許後/);
+  assert.match(ACCOUNT_CREATION_CONSENT_TEXT, /本次登記不代表已收到帳號設定方式的私下說明/);
+  assert.doesNotMatch(text, /不蒐集或保存任何帳號密碼|已採用加密密碼管理器|在取得帳號代辦與共同使用同意前/);
 });
 
 test('revocation has two exact contacts and does not promise automatic cancellation at a third party', () => {

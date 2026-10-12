@@ -6,15 +6,15 @@ export type RegistrationConfig = Readonly<{
   startsAt: string | null;
 }>;
 
-// Keep CLOSED until the current public notice is approved and the Google-hosted form passes review.
+// Publish these OPEN settings only after the matching Google deployment is enabled and verified.
 // Approval covers the disclosed notice; it does not invent still-unannounced prize or tax details.
 // A public deployment URL is permitted here; never add a secret or participant data.
 export const REGISTRATION_CONFIG: RegistrationConfig = Object.freeze({
-  open: false,
-  formUrl: '',
-  formUrlVerified: false,
-  publicNoticeApproved: false,
-  startsAt: null,
+  open: true,
+  formUrl: 'https://script.google.com/macros/s/AKfycbwtRZZ7RtPE2Qz1FU_p7Qumj-9M7nyiK-LCySVVvoCevTiV_y3JqO6peOaPEVJbX3J_/exec',
+  formUrlVerified: true,
+  publicNoticeApproved: true,
+  startsAt: '2026-10-12T23:07:34+08:00',
 });
 
 export const REGISTRATION_PREPARING_TEXT = '正式登記準備中，尚未開放收件';

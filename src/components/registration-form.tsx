@@ -10,12 +10,12 @@ const requiredFields = ['本名', '身分證字號', '手機號碼', 'Email', 'L
 export function RegistrationEntry({ state }: { state: RegistrationState }) {
   return (
     <div className="space-y-7" aria-label="正式登記入口">
-      <Alert className="rounded-2xl border-amber-300 bg-amber-50 p-4 text-amber-950">
-        <AlertCircle />
+      <Alert className={`rounded-2xl p-4 ${state.status === 'open' ? 'border-green/20 bg-green/5 text-green' : 'border-amber-300 bg-amber-50 text-amber-950'}`}>
+        {state.status === 'open' ? <ShieldCheck /> : <AlertCircle />}
         <AlertTitle className="font-black">{state.message}</AlertTitle>
-        <AlertDescription className="leading-6 text-amber-900/75">
+        <AlertDescription className="leading-6 text-ink/70">
           {state.status === 'preparing'
-            ? '目前仍在確認帳號代辦授權流程；完成最終告知及正式開放驗收後，才會開放入口。請勿透過此公告頁提供個人資料。'
+            ? 'Google 託管表單正在完成正式開放驗收，確認後會開放入口。請勿透過此公告頁提供個人資料。'
             : state.status === 'closed'
               ? '登記入口已關閉。如需查詢既有登記或行使個資權利，請聯絡資料管理負責人。'
               : '請在 Google 託管表單填寫資料，再閱讀完整告知文件並捲動至底部，主動勾選四項同意後送出，以收件回條確認結果。'}

@@ -20,15 +20,26 @@ const ready: RegistrationConfig = {
 };
 const duringCollection = Date.parse('2027-06-01T12:00:00+08:00');
 
-test('the prepared release is closed without a URL or an invented start date', () => {
-  assert.equal(REGISTRATION_CONFIG.open, false);
-  assert.equal(REGISTRATION_CONFIG.formUrl, '');
-  assert.equal(REGISTRATION_CONFIG.formUrlVerified, false);
-  assert.equal(REGISTRATION_CONFIG.publicNoticeApproved, false);
-  assert.equal(REGISTRATION_CONFIG.startsAt, null);
+test('the release configuration opens the designated Google entry at the verified start time', () => {
+  assert.equal(REGISTRATION_CONFIG.open, true);
+  assert.equal(REGISTRATION_CONFIG.formUrl, 'https://script.google.com/macros/s/AKfycbwtRZZ7RtPE2Qz1FU_p7Qumj-9M7nyiK-LCySVVvoCevTiV_y3JqO6peOaPEVJbX3J_/exec');
+  assert.equal(REGISTRATION_CONFIG.formUrlVerified, true);
+  assert.equal(REGISTRATION_CONFIG.publicNoticeApproved, true);
+  assert.equal(REGISTRATION_CONFIG.startsAt, '2026-10-12T23:07:34+08:00');
+  assert.equal(isAllowedRegistrationUrl(REGISTRATION_CONFIG.formUrl), true);
   assert.deepEqual(getRegistrationState(REGISTRATION_CONFIG, duringCollection), {
+    status: 'open', formUrl: REGISTRATION_CONFIG.formUrl, message: '正式登記已開放，請前往 Google 託管表單',
+  });
+  assert.equal(getRegistrationState(REGISTRATION_CONFIG, Date.parse(REGISTRATION_CONFIG.startsAt!) - 1).status, 'preparing');
+  assert.equal(getRegistrationState(REGISTRATION_CONFIG, Date.parse(REGISTRATION_CONFIG.startsAt!)).status, 'open');
+  assert.equal(getRegistrationState(REGISTRATION_CONFIG, REGISTRATION_CLOSES_AT).status, 'closed');
+});
+
+test('the release can be closed immediately without leaking a navigable form URL', () => {
+  assert.deepEqual(getRegistrationState({ ...REGISTRATION_CONFIG, open: false }, duringCollection), {
     status: 'preparing', formUrl: null, message: REGISTRATION_PREPARING_TEXT,
   });
+  assert.equal(getRegistrationState({ ...REGISTRATION_CONFIG, publicNoticeApproved: false }, duringCollection).formUrl, null);
 });
 
 test('each release requirement independently keeps the registration link closed', () => {
