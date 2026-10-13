@@ -120,3 +120,7 @@ npm run preview
 ## 素材
 
 球拍圖片由活動主辦方提供，圖片同時展示 QUICK 與 POWER；本次頭獎只有 FORTIUS 11 POWER 一支。相關商標與圖片權利屬原權利人所有。
+
+其餘四項獎品使用 `public/prizes/` 內的 AI 生成示意圖：`bag-illustration-v1.webp`、`towel-illustration-v1.webp`、`socks-illustration-v1.webp` 與 `jersey-illustration-v1.webp`。示意圖不是實際獎品照片，也不承諾品牌、款式、顏色、規格或價值；每張卡片均標示「AI 生成示意圖／非實際獎品」，實際品項依後續公告。
+
+四張卡片維持球袋 3 份、毛巾 6 份、襪子 10 份及球衣 10 份，加上頭獎球拍共 30 份；圖片使用網站基底路徑、固定方形比例及延遲載入，版面為手機單欄、平板雙欄、桌機四欄。`tests/prize-images.test.ts` 檢查數量、圖檔、替代文字、示意標示及載入設定；實際圖片內容與多尺寸畫面另須視覺驗收。

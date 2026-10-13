@@ -30,10 +30,22 @@ import { AUTHORIZED_VENUES, CONSENT_VERSION, CONTACTS, CROSS_VENUE_NOTICE_TEXT, 
 import { FIRST_DRAW_DATE_TEXT, FIRST_DRAW_ELIGIBILITY_DEADLINE_TEXT, getRegistrationState, REGISTRATION_DEADLINE_TEXT } from '@/lib/registration-config';
 
 const prizes = [
-  { count: '03', name: '高級球袋', note: '三名', tone: 'lime' },
-  { count: '06', name: '運動毛巾', note: '六名', tone: 'paper' },
-  { count: '10', name: '運動襪', note: '十名', tone: 'paper' },
-  { count: '10', name: '曜日球衣', note: '十名', tone: 'paper' },
+  {
+    count: '03', name: '高級球袋', note: '三名', tone: 'lime',
+    image: 'prizes/bag-illustration-v1.webp', alt: '高級球袋的 AI 生成示意圖，非實際獎品',
+  },
+  {
+    count: '06', name: '運動毛巾', note: '六名', tone: 'paper',
+    image: 'prizes/towel-illustration-v1.webp', alt: '運動毛巾的 AI 生成示意圖，非實際獎品',
+  },
+  {
+    count: '10', name: '運動襪', note: '十名', tone: 'paper',
+    image: 'prizes/socks-illustration-v1.webp', alt: '運動襪的 AI 生成示意圖，非實際獎品',
+  },
+  {
+    count: '10', name: '曜日球衣', note: '十名', tone: 'paper',
+    image: 'prizes/jersey-illustration-v1.webp', alt: '曜日球衣的 AI 生成示意圖，非實際獎品',
+  },
 ];
 
 // Do not present a prior-year operator or system as a verified 2027 appointment.
@@ -234,15 +246,21 @@ export default function Home() {
               </Accordion>
             </div>
           </article>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-describedby="prize-illustration-note">
             {prizes.map((prize) => (
-              <article key={prize.name} className={`prize-card prize-card--${prize.tone} min-h-44 rounded-[1.6rem] border p-5 sm:min-h-52 sm:p-6`}>
-                <span className="font-mono text-4xl font-black tracking-[-0.08em] opacity-35">{prize.count}</span>
-                <div className="mt-auto"><h3 className="text-xl font-black">{prize.name}</h3><p className="mt-1 text-sm font-bold opacity-55">{prize.note}</p></div>
+              <article key={prize.name} className={`prize-card prize-card--${prize.tone} min-w-0 overflow-hidden rounded-[1.6rem] border`}>
+                <figure className="bg-cream">
+                  <img src={`${import.meta.env.BASE_URL}${prize.image}`} alt={prize.alt} width={1024} height={1024} loading="lazy" decoding="async" className="block aspect-square w-full object-contain" />
+                  <figcaption className="border-y border-ink/10 bg-white/90 px-4 py-3 text-center text-xs font-bold leading-5 text-ink/70">AI 生成示意圖／非實際獎品</figcaption>
+                </figure>
+                <div className="flex flex-1 items-center justify-between gap-3 p-5 sm:p-6">
+                  <div className="min-w-0"><h3 className="text-xl font-black text-ink">{prize.name}</h3><p className="mt-1 text-sm font-bold text-ink/65">{prize.note}</p></div>
+                  <span className="shrink-0 border-l border-ink/15 pl-4 font-mono text-4xl font-black tracking-[-0.08em] text-ink/75" aria-hidden="true">{prize.count}</span>
+                </div>
               </article>
             ))}
           </div>
-          <div className="mt-5 flex items-start gap-2 rounded-2xl bg-cream px-4 py-4 text-sm font-medium leading-6 text-ink/65"><Info className="mt-1 size-4 shrink-0 text-green" /><p>球拍型號與首波抽獎日期已確認；其餘獎品的品牌與型號、各獎品價值、付款與扣繳資料仍待定案，將另行公告。「頂級」與「高級」為活動品項名稱。</p></div>
+          <div id="prize-illustration-note" className="mt-5 flex items-start gap-2 rounded-2xl bg-cream px-4 py-4 text-sm font-medium leading-6 text-ink/70"><Info className="mt-1 size-4 shrink-0 text-green" /><div className="space-y-2"><p>球袋、毛巾、襪子與球衣圖片皆為 AI 生成示意圖，非實際獎品；實際款式、顏色、品牌與型號以後續公告為準。</p><p>球拍型號與首波抽獎日期已確認；各獎品價值、付款與扣繳資料仍待定案。「頂級」與「高級」為活動品項名稱。</p></div></div>
         </div>
       </section>
 
