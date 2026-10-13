@@ -6,11 +6,11 @@ export type RegistrationConfig = Readonly<{
   startsAt: string | null;
 }>;
 
-// Keep collection paused while the website and Google deployment switch notice versions.
+// Reopen this entry after the production Google v16 deployment passed end-to-end verification.
 // Approval covers the disclosed notice; it does not invent still-unannounced prize or tax details.
 // A public deployment URL is permitted here; never add a secret or participant data.
 export const REGISTRATION_CONFIG: RegistrationConfig = Object.freeze({
-  open: false,
+  open: true,
   formUrl: 'https://script.google.com/macros/s/AKfycbwtRZZ7RtPE2Qz1FU_p7Qumj-9M7nyiK-LCySVVvoCevTiV_y3JqO6peOaPEVJbX3J_/exec',
   formUrlVerified: true,
   publicNoticeApproved: true,
