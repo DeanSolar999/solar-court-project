@@ -11,11 +11,11 @@ GitHub Pages 網址：<https://deansolar999.github.io/solar-court-project/>
 - 手機與桌機排版。
 - Google 託管表單正式登記入口與填寫前說明。
 
-**Google 正式登記已開放，並完成雲端收件驗收。** 本版本的活動網站已接上驗收完成的正式入口。GitHub Pages 只提供活動公告與登記入口，沒有個資輸入欄位，也沒有報名 API。正式填寫、驗證與儲存由獨立的 Google 託管表單承接；填寫後須閱讀完整告知並捲動至底部，再主動確認四項同意後送出。GitHub Pages 的發布狀態仍須以成功工作流程與實際網站讀回確認。
+**目前來源為 v16 本機準備版，尚未完成本版雲端驗收或部署。** v15 的既有開放與驗收紀錄保留於下方歷史章節，不代表 v16 已上線。GitHub Pages 只提供活動公告與登記入口，沒有個資輸入欄位，也沒有報名 API。正式填寫、驗證與儲存由獨立的 Google 託管表單承接；填寫後須閱讀完整告知並捲動至底部，再主動確認四項同意後送出。GitHub Pages 的發布狀態仍須以成功工作流程與實際網站讀回確認。
 
 ## 開放條件
 
-設定集中在 `src/lib/registration-config.ts`。本版設定 `open: true`、`formUrlVerified: true`、`publicNoticeApproved: true`，開始時間為 `2026-10-12T23:07:34+08:00`。正式入口為 [Google 託管登記表單](https://script.google.com/macros/s/AKfycbwtRZZ7RtPE2Qz1FU_p7Qumj-9M7nyiK-LCySVVvoCevTiV_y3JqO6peOaPEVJbX3J_/exec)。同一 Google 部署已啟用收件，正式網址、開始時間與實際寫入均完成核對；不得以仍關閉的測試網址作為公開收件入口。
+設定集中在 `src/lib/registration-config.ts`。v16 切換期間設定 `open: false`，頁面顯示「告知內容更新中，暫停收件，請稍後再試」，登記入口暫時停用。保留既有 `formUrlVerified: true`、`publicNoticeApproved: true`、開始時間 `2026-10-12T23:07:34+08:00` 及[正式入口網址](https://script.google.com/macros/s/AKfycbwtRZZ7RtPE2Qz1FU_p7Qumj-9M7nyiK-LCySVVvoCevTiV_y3JqO6peOaPEVJbX3J_/exec)。這些沿用設定不是 v16 正式部署成功的證據；切換與重新開放須由主代理確認網站、Google 表單及同意版本一致，並完成正式驗收。
 
 `publicNoticeApproved` 只代表目前公開告知版本獲核可，不表示仍待公告的獎品價值或稅務細節已確定。開始時間必須含時區，前端與 Google 後端需一致。場地協助登記截止為 2027 年 12 月 31 日 23:59:59（台北時間），自 2028 年 1 月 1 日 00:00:00 起停止導向登記；此期限不是首波抽獎資格截止。
 
@@ -23,7 +23,7 @@ GitHub Pages 網址：<https://deansolar999.github.io/solar-court-project/>
 - 網址只接受 `https://script.google.com/macros/s/<deploymentId>/exec`；不接受 query、hash、帳密、其他網域或 `/dev`，不能放參加者個資或共用密鑰。
 - URL 格式檢查不等於部署驗收；更換網址後必須重新驗收並更新 `formUrlVerified`。
 - 開放前同步檢查 `index.html` 的 title、description、OG、Twitter 與 noscript 文字，以及 Google 表單的實際開始／截止設定與完整活動辦法。
-- 本版告知版本為 `2027-v15-2026-10-12`，須與 Google 託管表單、後端保存的同意快照一致。
+- 本版準備中的告知版本為 `2027-v16-2026-10-13`，須與 Google 託管表單、後端保存的同意快照一致；不得改寫既有 v15 紀錄。
 - GitHub 頁面的時間檢查只是入口提示；Google 表單後端必須獨立依伺服器時間、收件開關與完整驗證拒收未開放或逾期資料。
 
 ## 已核定的部分活動規則
@@ -41,9 +41,18 @@ GitHub Pages 網址：<https://deansolar999.github.io/solar-court-project/>
 
 仍待確認：各獎品實際價值、付款與扣繳資料，以及回覆 14 日、領取 30 日的明確起算點。現在只能保留「依得獎通知於 14 日內回覆、30 日內領取」的表述，不推算固定曆日，也不改成「回覆後 30 日」。未自行設定付款／扣繳主體、折現政策或新的抽獎。其餘獎品品牌與型號沿用待公告狀態。
 
-上述待公告事項仍須如實揭露，不因 `publicNoticeApproved` 設為 `true` 而宣稱定案。v15 最終公告必須與 Google 表單、同意快照及服務端版本同步；發布新版公告或完成測試環境驗收，都不等於已完成正式收件驗收。
+上述待公告事項仍須如實揭露，不因 `publicNoticeApproved` 設為 `true` 而宣稱定案。當次最終公告必須與 Google 表單、同意快照及服務端版本同步；發布新版公告或完成測試環境驗收，都不等於已完成正式收件驗收。
 
-## 2026-10-12 授權公告修訂
+## 2026-10-13 帳號授權修訂（v16 準備版）
+
+- 帳號項改為「帳號代辦與共同使用授權」。本人閱讀完整告知、主動勾選並成功送出後，即依本次告知授權代辦及共同使用，不再加入日後私訊取得第二次帳號授權的步驟。
+- 告知代辦新帳號的預設密碼結構，只適用本次代辦的新帳號；球團不會擅自修改或重設既有帳號。本次僅修訂告知文字，未產生、儲存或測試任何個人的實際密碼，也不宣稱這個結構安全。
+- 保留授權期限、營運單位規則、本人驗證、表單不收密碼與一次性驗證碼、不代簽及不代作金錢承諾，以及終止授權管道。其他三項同意不變；新增場館仍須另行取得本人同意，不因帳號授權改版而擴張範圍。
+- 網站同意預覽、折疊說明與完整個資告知共用 `src/lib/consent.ts`。須同步 Google 表單、完整告知快照與版本契約；v15 同意及驗收紀錄保留原狀，不回寫為 v16。
+
+本節記錄本機準備中的變更，尚未宣告 v16 發布或雲端驗收成功。
+
+## 2026-10-12 授權公告修訂（v15 歷史）
 
 `src/lib/consent.ts` 是公告、四項同意、聯絡方式與適用場館的文字正本；App 與登記入口均引用同一份常數。獨立的 Apps Script 專案須鏡像同版本、全文及完整告知，並以契約測試比對，不能只更新摘要。
 

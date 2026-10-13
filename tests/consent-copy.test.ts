@@ -24,7 +24,7 @@ const entry = readFileSync(new URL('../src/components/registration-form.tsx', im
 const contactComponent = readFileSync(new URL('../src/components/authorization-contact-links.tsx', import.meta.url), 'utf8');
 
 test('pins a new notice version and preserves four independent consent texts', () => {
-  assert.equal(CONSENT_VERSION, '2027-v15-2026-10-12');
+  assert.equal(CONSENT_VERSION, '2027-v16-2026-10-13');
   assert.deepEqual(CONSENT_ITEMS.map(({ key }) => key), ['privacy', 'scope', 'account', 'rules']);
   assert.equal(new Set(CONSENT_ITEMS.map(({ text }) => text)).size, 4);
   for (const item of CONSENT_ITEMS) assert.ok(item.title && item.summary && item.text);
@@ -49,14 +49,16 @@ test('manual supplementary consent requires an explicit reply without reducing o
   assert.notEqual(CONTACTS.registrationSystemUrl, CONTACTS.communityUrl);
 });
 
-test('shared-account scope requires operator permission and does not authorize signing or payments', () => {
+test('one submitted account consent discloses the default structure and retains scope and operator limits', () => {
   const text = ACCOUNT_USE_NOTICE.join('\n');
-  for (const expected of ['以本人名義', '僅於該營運單位規則允許時', '指定管理人員', '2027 年 12 月 31 日', '提前申請終止', '本次登記可以先完成', '實際代辦或共同操作帳號前', '取得本人另行明確確認', '未取得確認前，不會代為建立或共同操作帳號', '本表單不收集帳號密碼', '由本人操作', '不包含球團代簽契約或代作金錢承諾']) {
+  for (const expected of ['以本人名義', '僅於該營運單位規則允許時', '指定管理人員', '2027 年 12 月 31 日', '提前申請終止', '主動勾選「帳號代辦與共同使用授權」並成功送出表單後', '預設密碼為「1qaz」接上本人身分證字號末四碼', '僅適用於本次代辦的新帳號', '不會擅自修改或重設本人既有帳號的密碼', '本表單不收集帳號密碼', '由本人操作', '不包含球團代簽契約或代作金錢承諾']) {
     assert.ok(text.includes(expected), expected);
   }
-  assert.match(ACCOUNT_CREATION_CONSENT_TEXT, /完成確認且營運單位允許後/);
-  assert.match(ACCOUNT_CREATION_CONSENT_TEXT, /本次登記不代表已收到帳號設定方式的私下說明/);
-  assert.doesNotMatch(text, /不蒐集或保存任何帳號密碼|已採用加密密碼管理器|在取得帳號代辦與共同使用同意前/);
+  assert.equal(ACCOUNT_CREATION_CONSENT_TEXT, '如本人尚未註冊相關運動中心帳號，我同意曜日羽球團使用本次提供的必要資料，以本人名義代為申請。我已知悉，代辦帳號的預設密碼為「1qaz」接上本人身分證字號末四碼。我同意由本人與球團指定管理人員，自同意日起至 2027 年 12 月 31 日止共同使用帳號，僅供已授權場館的抽籤申請及必要後續程序使用；實際辦理仍須遵守各場館規則。');
+  const accountItem = CONSENT_ITEMS.find(({ key }) => key === 'account')!;
+  assert.equal(accountItem.title, '帳號代辦與共同使用授權');
+  assert.equal(accountItem.summary, '閱讀預設密碼與共同使用說明，勾選並送出後授權球團代辦。');
+  assert.doesNotMatch(text + ACCOUNT_CREATION_CONSENT_TEXT, /須先透過私訊|取得本人另行明確確認|完成上述確認後|只以非公開方式|不蒐集或保存任何帳號密碼|已採用加密密碼管理器|安全密碼|1qaz\d{4}/);
 });
 
 test('revocation has two exact contacts and does not promise automatic cancellation at a third party', () => {
