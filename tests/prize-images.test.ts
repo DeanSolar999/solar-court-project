@@ -38,12 +38,14 @@ test('ships a distinct WebP illustration with descriptive non-product alt text f
 });
 
 test('reserves square image space, loads lazily and respects the GitHub Pages base path', () => {
-  assert.ok(prizeCards.includes('src={`${import.meta.env.BASE_URL}${prize.image}`}'));
+  assert.ok(prizeCards.includes('src={import.meta.env.BASE_URL + prize.image}'));
   assert.match(prizeCards, /alt=\{prize.alt\}/);
   assert.match(prizeCards, /width=\{1024\} height=\{1024\}/);
   assert.match(prizeCards, /loading="lazy" decoding="async"/);
-  assert.match(prizeCards, /aspect-square w-full object-contain/);
-  assert.match(page, /grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-describedby="prize-illustration-note"/);
+  assert.match(prizeCards, /className="prize-image"/);
+  assert.match(styles, /\.prize-image \{[^}]*aspect-ratio: 1;[^}]*object-fit: contain/);
+  assert.match(page, /className="prize-grid" aria-describedby="prize-illustration-note"/);
+  assert.match(styles, /minmax\(min\(100%, 9\.75rem\), 1fr\)/);
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.prize-card:hover \{ transform: none; \}/);
 });
 
@@ -51,6 +53,6 @@ test('labels each mockup and retains the real racket image without extra prize p
   assert.match(prizeCards, /<figcaption[^>]*>AI 生成示意圖／非實際獎品<\/figcaption>/);
   assert.match(page, /實際款式、顏色、品牌與型號以後續公告為準/);
   assert.match(page, /各獎品價值、付款與扣繳資料仍待定案/);
-  assert.ok(page.includes('src={`${import.meta.env.BASE_URL}mizuno-fortius-11-power.jpg`}'));
+  assert.ok(page.includes("src={import.meta.env.BASE_URL + 'mizuno-fortius-11-power.jpg'}"));
   assert.match(page, /圖片展示 QUICK 與 POWER 兩款；本次頭獎為 FORTIUS 11 POWER 一支/);
 });

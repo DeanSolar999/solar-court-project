@@ -10,6 +10,7 @@ import {
 
 const page = readFileSync(new URL('../src/App.tsx', import.meta.url), 'utf8');
 const entry = readFileSync(new URL('../src/components/registration-form.tsx', import.meta.url), 'utf8');
+const marketing = readFileSync(new URL('../src/lib/marketing-content.ts', import.meta.url), 'utf8');
 const metadata = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 
 test('keeps the first-draw cutoff, draw day and venue-registration deadline distinct', () => {
@@ -27,8 +28,8 @@ test('keeps the first-draw cutoff, draw day and venue-registration deadline dist
 });
 
 test('does not imply later venue registrations qualify for the first drawing', () => {
-  assert.ok(page.includes('截止後仍可協助場地登記，但不列入首波抽獎名單'));
-  assert.ok(entry.includes('資格截止後仍可協助場地登記，但不列入首波抽獎名單'));
+  assert.ok(page.includes('資格截止後仍可協助場地登記，但不列入首波抽獎名單'));
+  assert.ok(marketing.includes('首波抽獎資格已截止，新登記不列入首波名單'));
   assert.ok(!page.includes('完成資料授權就能參加'));
   assert.ok(!page.includes('各獎品價值及抽獎日期，將於正式開放前公告'));
 });
@@ -40,13 +41,14 @@ test('retains approved winner and payment rules without inventing a claim start 
   assert.doesNotMatch(page, /回覆後\s*30\s*日/);
 });
 
-test('sharing descriptions disclose both deadlines, the draw day and the open registration entry', () => {
+test('sharing descriptions retain dates without an evergreen claim that raffle entry is open', () => {
   for (const name of ['description', 'og:description', 'twitter:description']) {
     const tag = metadata.match(new RegExp(`<meta (?:name|property)="${name}" content="([^"]+)"`));
     assert.ok(tag, name);
-    for (const text of ['2026/12/31（台北時間）', '2027/01/10', '場地協助登記至 2027/12/31', '正式登記開放中', 'Google 託管表單']) {
+    for (const text of ['2026/12/31（含當日，台北時間）', '2027/01/10', '場地協助登記至 2027/12/31', '登記狀態請見網站']) {
       assert.ok(tag[1].includes(text), `${name}: ${text}`);
     }
   }
-  assert.doesNotMatch(metadata, /正式登記準備中|尚未開放收件/);
+  assert.doesNotMatch(metadata, /正式登記開放中|就能先抽獎|就能參加首波抽獎/);
+  assert.match(entry, /將前往 Google 託管表單/);
 });
