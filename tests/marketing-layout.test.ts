@@ -10,7 +10,7 @@ const css = readFileSync(new URL('../src/index.css', import.meta.url), 'utf8');
 test('six sections preserve legacy destinations while leading with the invitation and rewards', () => {
   assert.deepEqual([...page.matchAll(/^      <section id="([^"]+)"/gm)].map((match) => match[1]), ['top', 'prizes', 'benefits', 'how', 'venues', 'register']);
   for (const id of ['privacy', 'withdrawal', 'draw-rules-heading']) assert.ok(page.includes('id="' + id + '"'));
-  assert.match(entry, /id="supplemental-notice"/);
+  assert.match(page, /item.id === 'supplemental-authorization' \? 'supplemental-notice' : undefined/);
   assert.match(page, /一起幫曜日，<span>多爭取一面球場/);
   assert.ok(page.indexOf('className="hero-benefits"') < page.indexOf('id="hero-action"'));
   assert.ok(page.indexOf('className="grand-prize"') < page.indexOf('id="draw-rules-heading"'));
@@ -23,13 +23,41 @@ test('the actual form link follows the visible identity, shared-account and with
   assert.doesNotMatch(page, /<RegistrationLink\b/);
   assert.match(page, /href="#register" className="marketing-button"/);
   assert.match(page, /先看資料怎麼用/);
-  const summary = entry.slice(entry.indexOf('className="reading-summary"'), entry.indexOf('className="disclosure-stack"'));
-  for (const text of ['身分證字號', '帳號代辦', '共同操作', '本人名義', '驗證、繳費、簽約與切結', '2027/12/31', '提前申請終止']) assert.ok(summary.includes(text), text);
+  const summary = entry.slice(entry.indexOf('className="reading-summary"'), entry.indexOf('{children}'));
+  for (const text of ['身分證字號及聯絡資料', '本次抽獎與通知', '公告 13 個場館', '帳號代辦與場地申請', '若尚未註冊', '僅在場館規則允許時', '球團指定管理人員', '共同使用你名義下的帳號', '同意當日起至 2027/12/31', '提前申請終止', '新增場館或學校', '取得你明確同意後', '本頁不收個資', '正式表單不收密碼或驗證碼']) assert.ok(summary.includes(text), text);
+  assert.equal((summary.match(/<p(?:\s|>)/g) ?? []).length, 3, 'two short purpose paragraphs plus one data hint');
   assert.ok(entry.indexOf('{children}') < entry.indexOf('<RegistrationLink'));
   assert.match(page, /想終止授權或有疑問/);
   assert.match(page, /<AuthorizationContactLinks/);
   assert.equal((page + entry).match(/Google 託管表單/g)?.length, 1);
   assert.doesNotMatch(page + entry, /<input\b|<form\b|<Checkbox\b|<RadioGroup\b/);
+});
+
+test('registration has one complete notice disclosure before contact and the final external link', () => {
+  const registration = page.slice(page.indexOf('<section id="register"'), page.indexOf('<footer'));
+  assert.equal((registration.match(/<details\b/g) ?? []).length, 1);
+  assert.equal((registration.match(/<summary\b/g) ?? []).length, 1);
+  assert.match(registration, /<summary id="privacy">閱讀完整個資與授權說明<\/summary>/);
+  assert.match(registration, /告知與同意版本：\{CONSENT_VERSION\}/);
+  assert.match(registration, /PRIVACY_NOTICE_ITEMS.map/);
+  assert.match(registration, /item.paragraphs.map/);
+  assert.match(registration, /item.sourceLinks.map/);
+  assert.match(registration, /id=\{'privacy-' \+ item.id\}/);
+  assert.match(registration, /<h3 id=\{item.id === 'supplemental-authorization' \? 'supplemental-notice' : undefined\}>\{item.title\}/);
+  assert.match(registration, /<div id="withdrawal" className="withdrawal-contact"><p>/);
+  assert.ok(registration.indexOf('<details') < registration.indexOf('<AuthorizationContactLinks'));
+  assert.ok(registration.indexOf('<AuthorizationContactLinks') < registration.indexOf('</RegistrationEntry>'));
+  assert.ok(entry.indexOf('{children}') < entry.indexOf('<RegistrationLink'));
+  assert.match(registration, /既有場館會員或租約不會自動取消/);
+  assert.doesNotMatch(entry + registration, /consent-preview|CONSENT_ITEMS.map|四項同意內容與正式填寫流程/);
+});
+
+test('only the final open entry uses the shorter label and paused or closed labels stay gated', () => {
+  assert.match(entry, /state.status === 'open' \? '開始填寫資料' : actionLabel/);
+  assert.match(entry, /<RegistrationLink state=\{state\}/);
+  assert.match(entry, /state.status !== 'open' && <p role="status"/);
+  assert.doesNotMatch(page + sticky, /開始填寫資料/);
+  assert.match(page, /<MobileRegistrationCta[^>]+label=\{marketing.actionLabel\}/);
 });
 
 test('concept illustrations use distinct local assets and readable HTML remains outside images', () => {

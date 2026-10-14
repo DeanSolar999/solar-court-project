@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import {
@@ -28,6 +29,7 @@ test('pins a new notice version and preserves four independent consent texts', (
   assert.deepEqual(CONSENT_ITEMS.map(({ key }) => key), ['privacy', 'scope', 'account', 'rules']);
   assert.equal(new Set(CONSENT_ITEMS.map(({ text }) => text)).size, 4);
   for (const item of CONSENT_ITEMS) assert.ok(item.title && item.summary && item.text);
+  assert.equal(createHash('sha256').update(JSON.stringify(CONSENT_ITEMS)).digest('hex'), 'e8a5554600ca0112e9afe25b1961094cc53e2f19cde4321c8fc207151a48c157', 'all four approved v16 consent titles, summaries and full texts remain unchanged');
 });
 
 test('keeps exactly thirteen venues and distinguishes operators from application procedure', () => {
@@ -94,22 +96,24 @@ test('complete privacy notice lists all five rights and attributes the providers
 
 test('publication reuses the canonical notice and makes full text available without local data inputs', () => {
   assert.match(page, /PRIVACY_NOTICE_ITEMS.map/);
+  assert.match(page, /item.paragraphs.map/);
   assert.match(page, /VENUE_NOTICE_TEXT/);
-  assert.match(page, /REVOCATION_NOTICE.map/);
-  assert.match(entry, /CONSENT_ITEMS.map/);
-  assert.match(entry, /ACCOUNT_USE_NOTICE.map/);
-  assert.match(entry, /href="#privacy"/);
-  assert.match(entry, /id="supplemental-notice"/);
+  assert.deepEqual(PRIVACY_NOTICE_ITEMS.find(({ id }) => id === 'revocation')!.paragraphs, [...REVOCATION_NOTICE]);
+  assert.deepEqual(PRIVACY_NOTICE_ITEMS.find(({ id }) => id === 'supplemental-authorization')!.paragraphs, [...SUPPLEMENTAL_AUTHORIZATION_NOTICE]);
+  assert.deepEqual(PRIVACY_NOTICE_ITEMS.find(({ id }) => id === 'account-use')!.paragraphs.slice(0, ACCOUNT_USE_NOTICE.length), [...ACCOUNT_USE_NOTICE]);
+  assert.doesNotMatch(entry, /CONSENT_ITEMS.map|ACCOUNT_USE_NOTICE.map|SUPPLEMENTAL_AUTHORIZATION_NOTICE.map/);
+  assert.match(page, /<summary id="privacy">閱讀完整個資與授權說明<\/summary>/);
+  assert.match(page, /item.id === 'supplemental-authorization' \? 'supplemental-notice' : undefined/);
   assert.doesNotMatch(page + entry, /<input\b|<textarea\b|<form\b|<Checkbox\b|<RadioGroup\b/);
 });
 
 test('explains the full-document reading stage without treating scrolling as consent', () => {
   assert.equal(PRIVACY_NOTICE_ITEMS.length, 10);
-  assert.match(entry, /填寫 → 閱讀全文 → 確認同意 → 送出/);
-  assert.match(entry, /捲動至底部只是填寫流程的一部分，不代表已同意/);
-  assert.match(entry, /Google 表單回傳的收件回條/);
   const platformNotice = PRIVACY_NOTICE_ITEMS.find(({ id }) => id === 'collection-platform')!.paragraphs.join('');
+  assert.match(platformNotice, /填寫後，請閱讀完整告知文件並捲動至底部，再主動確認四項同意後送出/);
   assert.match(platformNotice, /捲動到文件底部不等於同意，也不能證明已理解內容/);
+  assert.match(FIRST_DRAW_QUALIFICATION_TEXT, /取得收件回條/);
+  assert.match(page, /FIRST_DRAW_QUALIFICATION_TEXT/);
 });
 
 test('first raffle qualification needs successful submission and not a prior court win', () => {

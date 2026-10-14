@@ -3,7 +3,7 @@ import { ArrowRight, BadgeDollarSign, Gift, HeartHandshake, ShieldCheck, Trophy,
 import { RegistrationEntry } from '@/components/registration-form';
 import { MobileRegistrationCta } from '@/components/mobile-registration-cta';
 import { AuthorizationContactLinks } from '@/components/authorization-contact-links';
-import { AUTHORIZED_VENUES, CONSENT_VERSION, CONTACTS, CROSS_VENUE_NOTICE_TEXT, FIRST_DRAW_QUALIFICATION_TEXT, PRIVACY_NOTICE_ITEMS, REVOCATION_NOTICE, VENUE_NOTICE_TEXT } from '@/lib/consent';
+import { AUTHORIZED_VENUES, CONSENT_VERSION, CONTACTS, CROSS_VENUE_NOTICE_TEXT, FIRST_DRAW_QUALIFICATION_TEXT, PRIVACY_NOTICE_ITEMS, VENUE_NOTICE_TEXT } from '@/lib/consent';
 import { FIRST_DRAW_DATE_TEXT, FIRST_DRAW_ELIGIBILITY_DEADLINE_TEXT, getRegistrationState, REGISTRATION_CLOSES_AT, REGISTRATION_DEADLINE_TEXT } from '@/lib/registration-config';
 import { FIRST_DRAW_CLOSES_AT, getMarketingContent } from '@/lib/marketing-content';
 
@@ -181,16 +181,15 @@ export default function Home() {
 
       <section id="register" ref={entryRef} className="marketing-section registration-section">
         <div className="page-shell reading-shell">
-          <div id="privacy" className="section-heading"><p className="eyebrow"><ShieldCheck aria-hidden="true" /> BEFORE YOU JOIN</p><h2>資料怎麼用，<span>先說清楚</span></h2><p>這是一份自願協助。了解必要資料與授權範圍後，再決定是否加入。</p></div>
+          <div className="section-heading"><p className="eyebrow"><ShieldCheck aria-hidden="true" /> BEFORE YOU JOIN</p><h2>資料怎麼用，<span>先說清楚</span></h2><p>這是一份自願協助。了解必要資料與授權範圍後，再決定是否加入。</p></div>
           <RegistrationEntry state={registrationState} actionLabel={marketing.actionLabel}>
             <div className="disclosure-stack">
-              <details className="marketing-disclosure" id="privacy-notice"><summary>閱讀完整個資告知事項（10 項）</summary><div className="disclosure-body">
+              <details className="marketing-disclosure" id="privacy-notice"><summary id="privacy">閱讀完整個資與授權說明</summary><div className="disclosure-body">
                 <p>告知與同意版本：{CONSENT_VERSION}。以下是表單所稱的「個資告知事項」，全文與 v16 正式表單相同。</p>
-                {PRIVACY_NOTICE_ITEMS.map((item) => <div key={item.id} id={'privacy-' + item.id} className="privacy-item"><h3>{item.title}</h3>{item.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{'sourceLinks' in item && <div><p>服務商公開政策</p><ul>{item.sourceLinks.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer" className="text-link">{source.label}</a></li>)}</ul></div>}</div>)}
+                {PRIVACY_NOTICE_ITEMS.map((item) => <div key={item.id} id={'privacy-' + item.id} className="privacy-item"><h3 id={item.id === 'supplemental-authorization' ? 'supplemental-notice' : undefined}>{item.title}</h3>{item.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{'sourceLinks' in item && <div><p>服務商公開政策</p><ul>{item.sourceLinks.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer" className="text-link">{source.label}</a></li>)}</ul></div>}{item.id === 'supplemental-authorization' && <a href={CONTACTS.communityUrl} target="_blank" rel="noreferrer" className="text-link">加入「曜日大家庭」LINE 社群</a>}</div>)}
               </div></details>
-              <details id="withdrawal" className="marketing-disclosure"><summary>如何行使個資權利或終止授權？</summary><div className="disclosure-body"><p>可查詢、閱覽、取得複製本、補充或更正、請求停止蒐集處理利用，以及請求刪除；這些權利不能預先放棄或以約定限制。</p>{REVOCATION_NOTICE.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></details>
             </div>
-            <div className="withdrawal-contact"><p><strong>想終止授權或有疑問？</strong>可私訊曜日報名系統或阿定，人工核對後回覆處理；既有場館會員或租約不會自動取消。</p><AuthorizationContactLinks /></div>
+            <div id="withdrawal" className="withdrawal-contact"><p><strong>想終止授權或有疑問？</strong>可私訊曜日報名系統或阿定，人工核對後回覆處理；既有場館會員或租約不會自動取消。</p><AuthorizationContactLinks /></div>
           </RegistrationEntry>
         </div>
       </section>
