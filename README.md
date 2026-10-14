@@ -136,4 +136,4 @@ npm run preview
 
 四張卡片維持球袋 3 份、毛巾 6 份、襪子 10 份及球衣 10 份，加上頭獎球拍共 30 份；圖片使用網站基底路徑、固定方形比例及延遲載入，版面為一般手機雙欄、窄螢幕單欄、平板雙欄、桌機四欄，依可用寬度與字體大小調整。`tests/prize-images.test.ts` 檢查數量、圖檔、替代文字、示意標示及載入設定；實際圖片內容與多尺寸畫面另須視覺驗收。
 
-`public/marketing/` 的三張概念插畫分別用於首屏、資料登記及場地協助；均標示「AI 概念插畫，非實際球友或場地」，不作為實際成員或場館的紀錄。圖片設定寬高並使用網站基底路徑，首屏以外延遲載入；關鍵條件、日期與獎金保留為 HTML 文字，沒有燒進圖片。素材提示詞與用途見 `docs/marketing-assets.md`。
+`public/marketing/` 的三張概念插畫分別用於首屏、資料登記及場地協助；目前引用 `community-illustration-v2.webp`、`registration-illustration-v2.webp` 與 `court-support-illustration-v2.webp`，以虛構成年男性球友呈現斯文與肉壯大叔等不同形象。均標示「AI 概念插畫，非實際球友或場地」，不作為實際成員或場館的紀錄。圖片設定寬高並使用網站基底路徑，首屏以外延遲載入；關鍵條件、日期與獎金保留為 HTML 文字，沒有燒進圖片。素材提示詞與用途見 `docs/marketing-assets.md`。

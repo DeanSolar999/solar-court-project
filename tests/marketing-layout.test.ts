@@ -35,13 +35,16 @@ test('the actual form link follows the visible identity, shared-account and with
 test('concept illustrations use distinct local assets and readable HTML remains outside images', () => {
   for (const name of ['community', 'registration', 'court-support']) {
     assert.ok(page.includes('name="' + name + '"'));
-    const asset = readFileSync(new URL('../public/marketing/' + name + '-illustration-v1.webp', import.meta.url));
+    const asset = readFileSync(new URL('../public/marketing/' + name + '-illustration-v2.webp', import.meta.url));
     assert.equal(asset.subarray(0, 4).toString('ascii'), 'RIFF');
     assert.equal(asset.subarray(8, 12).toString('ascii'), 'WEBP');
   }
   assert.match(page, /AI 概念插畫，非實際球友或場地/);
   assert.match(page, /width=\{1024\} height=\{1024\} loading=\{priority \? 'eager' : 'lazy'\}/);
   assert.ok(page.includes("src={import.meta.env.BASE_URL + 'marketing/'"));
+  assert.ok(page.includes("name + '-illustration-v2.webp'"));
+  assert.ok(!page.includes("name + '-illustration-v1.webp'"));
+  for (const description of ['四名虛構成年男性球友', '戴眼鏡的虛構斯文成年男性', '留鬍鬚的虛構肉壯中年男性']) assert.ok(page.includes(description), description);
   for (const condition of ['NT$2,000', 'NT$500', '每中籤一次', '每中籤一面固定場地', '於 30 日內匯款', '優先不保證錄取']) assert.ok(page.includes(condition), condition);
 });
 

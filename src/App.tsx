@@ -90,7 +90,7 @@ export default function Home() {
             </div>
             <p className="hero-qualification">{marketing.qualification}</p>
           </div>
-          <MarketingIllustration name="community" alt="四名虛構成年球友在羽球場互相擊掌的概念插畫" priority className="hero-art" />
+          <MarketingIllustration name="community" alt="四名虛構成年男性球友在羽球場相聚，包含斯文與肉壯大叔形象的概念插畫" priority className="hero-art" />
         </div>
       </section>
 
@@ -157,8 +157,8 @@ export default function Home() {
         <div className="page-shell">
           <div className="section-heading"><p className="eyebrow">A COURT TO CALL OURS</p><h2>讓每週見面的地方，<span>多一點確定</span></h2><p>曜日是為 LGBTQ+ 社群打造的羽球團。臺北固定場地不易募集，你願意在清楚範圍內提供協助，就讓我們多一次爭取安心打球空間的機會。</p></div>
           <div className="participation-grid">
-            <article className="participation-card"><MarketingIllustration name="registration" alt="虛構成年人用手機閱讀與填寫資料的概念插畫" /><div><p className="card-overline">01 · 先了解，再決定</p><h3>你提供資料與授權</h3><p>先看用途與範圍，願意參與再填寫；閱讀全文、主動同意後，取得成功回條。</p></div></article>
-            <article className="participation-card"><MarketingIllustration name="court-support" alt="虛構成年人與空白日曆、羽球場模型的概念插畫" /><div><p className="card-overline">02 · 一起完成申請</p><h3>球團申請，你配合必要程序</h3><p>球團依授權協助抽籤；本人完成必要驗證，中籤後再配合登記。提供資料不保證中籤。</p></div></article>
+            <article className="participation-card"><MarketingIllustration name="registration" alt="戴眼鏡的虛構斯文成年男性用手機閱讀與填寫資料的概念插畫" /><div><p className="card-overline">01 · 先了解，再決定</p><h3>你提供資料與授權</h3><p>先看用途與範圍，願意參與再填寫；閱讀全文、主動同意後，取得成功回條。</p></div></article>
+            <article className="participation-card"><MarketingIllustration name="court-support" alt="留鬍鬚的虛構肉壯中年男性與空白日曆、羽球場模型的概念插畫" /><div><p className="card-overline">02 · 一起完成申請</p><h3>球團申請，你配合必要程序</h3><p>球團依授權協助抽籤；本人完成必要驗證，中籤後再配合登記。提供資料不保證中籤。</p></div></article>
           </div>
         </div>
       </section>
@@ -202,5 +202,5 @@ export default function Home() {
 }
 
 function MarketingIllustration({ name, alt, priority = false, className = '' }: { name: 'community' | 'registration' | 'court-support'; alt: string; priority?: boolean; className?: string }) {
-  return <figure className={'marketing-illustration ' + className}><img src={import.meta.env.BASE_URL + 'marketing/' + name + '-illustration-v1.webp'} alt={alt} width={1024} height={1024} loading={priority ? 'eager' : 'lazy'} decoding="async" fetchPriority={priority ? 'high' : 'auto'} /><figcaption>AI 概念插畫，非實際球友或場地</figcaption></figure>;
+  return <figure className={'marketing-illustration ' + className}><img src={import.meta.env.BASE_URL + 'marketing/' + name + '-illustration-v2.webp'} alt={alt} width={1024} height={1024} loading={priority ? 'eager' : 'lazy'} decoding="async" fetchPriority={priority ? 'high' : 'auto'} /><figcaption>AI 概念插畫，非實際球友或場地</figcaption></figure>;
 }
