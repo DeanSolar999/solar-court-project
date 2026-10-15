@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Trophy } from 'lucide-react';
 import { RegistrationLink } from '@/components/registration-link';
 import { MobileRegistrationCta } from '@/components/mobile-registration-cta';
-import { CampaignIcon, MarketingIllustration, OfficialBrand } from '@/components/campaign-visuals';
+import { CampaignIcon, OfficialBrand } from '@/components/campaign-visuals';
+import { PixelCampaignHero } from '@/components/pixel-campaign-hero';
 import { ActivityDetails } from '@/pages/activity-details';
 import { CONTACTS } from '@/lib/consent';
 import { getRegistrationState, REGISTRATION_CLOSES_AT } from '@/lib/registration-config';
@@ -33,7 +34,6 @@ const headerTagline = '2027 場地募集 · LGBTQ+ 羽球社群';
 
 export default function Home() {
   const [now, setNow] = useState(() => Date.now());
-  const [headlineImageFailed, setHeadlineImageFailed] = useState(false);
   const [location, setLocation] = useState(() => ({ search: window.location.search, hash: window.location.hash }));
   const pageView = getPageView(location.search, location.hash);
   const registrationState = getRegistrationState(undefined, now);
@@ -90,21 +90,8 @@ export default function Home() {
 
       {pageView === 'details' ? <ActivityDetails state={registrationState} marketing={marketing} /> : <>
       <section id="top" className="marketing-hero">
-        <div className="page-shell hero-layout"><div className="hero-copy">
-          <h1 className="hero-rainbow-headline" aria-label="讓我們有一個 可以一起打球的地方">
-            {headlineImageFailed ? <span className="headline-fallback" aria-hidden="true">讓我們有一個<span>可以一起</span><span>打球的地方</span></span> : <img src={import.meta.env.BASE_URL + 'marketing/hero-rainbow-headline-v1.webp'} width={1200} height={800} alt="" aria-hidden="true" loading="eager" fetchPriority="high" decoding="async" onError={() => setHeadlineImageFailed(true)} />}
-          </h1>
-          <p className="hero-description">你的一份支持，讓曜日球友多一次相聚的機會。</p>
-          <ul className="hero-benefits" aria-label="參與亮點">
-            <li><CampaignIcon name="draw" /><strong>{marketing.firstDrawOpen ? '30 份' : '首波抽獎'}</strong><span>{marketing.firstDrawOpen ? '抽獎好禮' : marketing.phase === 'unavailable' ? '查看活動辦法' : '資格已截止'}</span></li>
-            <li><CampaignIcon name="priority" /><strong>季繳優先</strong><span>登記資格</span></li><li><CampaignIcon name="discount" /><strong>2027</strong><span>臨打優惠</span></li>
-          </ul>
-          <div ref={heroActionRef} className="hero-actions" id="hero-action">
-            <RegistrationLink state={registrationState} className="marketing-button">{marketing.actionLabel}<ArrowRight aria-hidden="true" /></RegistrationLink>
-            <a href={detailsHref('privacy')} className="text-link secondary-action">先看資料怎麼用</a>
-          </div>
-          <p className="hero-qualification">{marketing.qualification}</p>
-        </div><MarketingIllustration name="community" alt="四名虛構成年男性球友在羽球場相聚，包含斯文與肉壯大叔形象的概念插畫" priority className="hero-art" /></div>
+        <PixelCampaignHero state={registrationState} marketing={marketing} heroActionRef={heroActionRef} detailsHref={detailsHref()} />
+        <div className="page-shell pixel-qualification"><p className="hero-qualification">{marketing.qualification}</p></div>
       </section>
 
       <section id="prizes" className="marketing-section prizes-section">
@@ -146,8 +133,8 @@ export default function Home() {
         <div className="page-shell">
           <div className="section-heading"><p className="eyebrow">THANK YOU FOR BEING HERE</p><h2>你的支持，也有回饋</h2></div>
           <div className="reward-grid compact-rewards">
-            <article className="reward-card"><CampaignIcon name="priority" /><h3>季繳優先登記</h3><p>提供資料、授權並配合程序</p></article>
-            <article className="reward-card"><CampaignIcon name="discount" /><h3>當年度臨打優惠</h3><p>2027 球團福利</p></article>
+            <article id="priority-benefit" className="reward-card"><CampaignIcon name="priority" /><h3>季繳優先登記</h3><p>提供資料、授權並配合程序</p></article>
+            <article id="discount-benefit" className="reward-card"><CampaignIcon name="discount" /><h3>當年度臨打優惠</h3><p>2027 球團福利</p></article>
             <article className="reward-card reward-card-dark"><CampaignIcon name="bonus" /><h3>場地協助獎金</h3><p>中籤、完成登記並核對</p><dl className="compact-bonus"><dt>年租型 · 每中籤一次</dt><dd>NT$2,000</dd><dt>季租型 · 每中籤一面固定場地</dt><dd>NT$500</dd></dl></article>
           </div>
           <p className="body-note">季繳優先登記、當年度臨打優惠。優先不保證錄取；名額、優惠金額與適用場次依當期公告。</p>

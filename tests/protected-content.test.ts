@@ -19,7 +19,7 @@ test('approved canonical, collection gate, marketing dates and registration summ
 test('all baseline inline activity conditions and complete rules/specification blocks are moved without rewriting', () => {
   assert.equal(fixture.baseline, '5b5d1fdd0b440134f4aac66f6d2669d7d35189f4');
   assert.ok(fixture.fragments.length >= 25);
-  const published = read('src/App.tsx') + read('src/pages/activity-details.tsx') + read('src/components/campaign-visuals.tsx');
+  const published = read('src/App.tsx') + read('src/pages/activity-details.tsx') + read('src/components/campaign-visuals.tsx') + read('src/components/pixel-campaign-hero.tsx');
   // Decorative Lucide icons may move; all surrounding text and expressions must remain exact.
   const withoutDecorativeIcons = (source: string) => source.replace(/<(?:Gift|Users|HeartHandshake)\s[^>]*\/>/g, '');
   for (const fragment of fixture.fragments) assert.ok(withoutDecorativeIcons(published).includes(withoutDecorativeIcons(fragment)), 'Protected baseline text missing: ' + fragment);
