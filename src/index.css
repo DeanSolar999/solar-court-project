@@ -217,6 +217,40 @@ body { margin: 0; background: var(--background); color: var(--foreground); font-
 .skip-link { position: fixed; left: 1rem; top: 0; z-index: 100; transform: translateY(-150%); padding: 1rem; background: white; color: var(--ink); }
 .skip-link:focus { transform: translateY(.5rem); }
 
+/* Four-section campaign and a separate, unabridged reference document. */
+.official-brand { display: grid; place-items: center; flex-shrink: 0; padding: .3rem; border-radius: .6rem; background: var(--ink); }
+.official-brand img { display: block; width: 3.75rem; height: auto; object-fit: contain; }
+.official-brand-footer { padding: .4rem; }
+.official-brand-footer img { width: 6.25rem; }
+.campaign-page .header-inner { padding-block: .45rem; }
+.header-action:disabled { opacity: .65; cursor: not-allowed; }
+.campaign-icon { display: block; width: 7rem; height: auto; aspect-ratio: 1; object-fit: contain; flex-shrink: 0; }
+.icon-heading { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); align-items: center; gap: .85rem; max-width: none; }
+.icon-heading .campaign-icon { width: 100%; }
+.icon-heading h2 { margin-top: .35rem; }
+.icon-heading p:last-child { margin-top: .6rem; font-size: 1rem; line-height: 1.7; }
+.compact-rewards .reward-card { display: grid; grid-template-columns: 5rem minmax(0, 1fr); column-gap: 1rem; align-content: start; }
+.compact-rewards .campaign-icon { grid-row: 1 / 4; width: 100%; }
+.compact-rewards h3 { margin-top: 0; }
+.compact-rewards p { font-size: .9rem !important; }
+.compact-bonus { grid-column: 2; margin-top: 1rem; font-size: .8rem; line-height: 1.6; }
+.compact-bonus dt { color: rgb(255 255 255 / .85); }
+.compact-bonus dd { color: var(--lime); font-size: 1.4rem; font-weight: 900; margin-bottom: .6rem; }
+.rewards-section > .page-shell > .text-link { display: inline-block; margin-top: .8rem; }
+.invitation-layout { display: grid; gap: 1.25rem; max-width: 61rem; text-align: center; }
+.invitation-layout > .campaign-icon { width: 8rem; justify-self: center; }
+.invitation-layout h2 { margin-block: .6rem; font-size: clamp(1.7rem, 4.5vw, 2.6rem); font-weight: 900; line-height: 1.3; }
+.invitation-actions { display: flex; flex-direction: column; align-items: center; gap: 1.1rem; margin-top: 1.5rem; }
+.invitation-actions .marketing-button { width: 100%; }
+.details-intro { padding-block: 2.5rem 1rem; }
+.details-intro .eyebrow { margin-top: 1.5rem; }
+.details-intro h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; line-height: 1.3; margin-block: .5rem 1.5rem; }
+.details-nav { display: flex; flex-wrap: wrap; gap: .7rem 1.3rem; font-weight: 750; color: var(--green); }
+.details-nav a { text-decoration: underline; text-underline-offset: .2em; }
+.activity-details > .marketing-section { padding-block: 2.5rem; }
+.activity-details h2 { font-weight: 900; font-size: 1.7rem; line-height: 1.4; }
+.consent-document-heading { font-size: 1.2rem; font-weight: 850; margin-top: 2rem; }
+
 @media (min-width: 40rem) {
   .page-shell { width: min(100% - 4rem, 76rem); }
   .hero-layout { padding-block: 3rem; }
@@ -237,6 +271,14 @@ body { margin: 0; background: var(--background); color: var(--foreground); font-
 }
 
 @media (min-width: 64rem) {
+  .icon-heading { grid-template-columns: 7rem minmax(0, 1fr); gap: 1.25rem; }
+  .compact-rewards .reward-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .compact-rewards .campaign-icon { width: 9rem; margin-bottom: 1rem; }
+  .compact-bonus { margin-top: 1rem; }
+  .invitation-layout { grid-template-columns: 11rem minmax(0, 1fr); align-items: center; text-align: left; }
+  .invitation-layout > .campaign-icon { width: 100%; }
+  .invitation-actions { align-items: flex-start; }
+  .invitation-actions .marketing-button { width: auto; min-width: 20rem; }
   .page-shell { width: min(100% - 7rem, 76rem); }
   .header-inner { min-height: 4.5rem; }
   .desktop-nav { display: flex; gap: 2rem; font-size: .9rem; font-weight: 750; }

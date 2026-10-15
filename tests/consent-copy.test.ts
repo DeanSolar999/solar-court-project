@@ -20,7 +20,8 @@ import {
   VENUE_NOTICE_TEXT,
 } from '../src/lib/consent.ts';
 
-const page = readFileSync(new URL('../src/App.tsx', import.meta.url), 'utf8');
+const page = readFileSync(new URL('../src/App.tsx', import.meta.url), 'utf8')
+  + readFileSync(new URL('../src/pages/activity-details.tsx', import.meta.url), 'utf8');
 const entry = readFileSync(new URL('../src/components/registration-form.tsx', import.meta.url), 'utf8');
 const contactComponent = readFileSync(new URL('../src/components/authorization-contact-links.tsx', import.meta.url), 'utf8');
 

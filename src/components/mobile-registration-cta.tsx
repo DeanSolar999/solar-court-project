@@ -1,11 +1,14 @@
 import { useEffect, useState, type RefObject } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { RegistrationLink } from '@/components/registration-link';
+import type { RegistrationState } from '@/lib/registration-config';
 
-export function MobileRegistrationCta({ heroRef, entryRef, label, enabled }: {
+export function MobileRegistrationCta({ heroRef, entryRef, label, enabled, state }: {
   heroRef: RefObject<HTMLDivElement | null>;
   entryRef: RefObject<HTMLElement | null>;
   label: string;
   enabled: boolean;
+  state: RegistrationState;
 }) {
   const [heroPassed, setHeroPassed] = useState(false);
   const [entryVisible, setEntryVisible] = useState(false);
@@ -48,5 +51,5 @@ export function MobileRegistrationCta({ heroRef, entryRef, label, enabled }: {
   }, [heroRef, entryRef]);
 
   if (!enabled || !heroPassed || entryVisible || focusObstructed) return null;
-  return <div className="mobile-sticky-cta"><a href="#register" className="marketing-button">{label}<ArrowRight aria-hidden="true" /></a></div>;
+  return <div className="mobile-sticky-cta"><RegistrationLink state={state} className="marketing-button">{label}<ArrowRight aria-hidden="true" /></RegistrationLink></div>;
 }
