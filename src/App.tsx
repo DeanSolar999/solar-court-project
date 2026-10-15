@@ -29,6 +29,7 @@ const prizes = [
 ];
 
 const detailsHref = (id = 'details-top') => import.meta.env.BASE_URL + '?view=details#' + id;
+const headerTagline = '2027 場地募集 · LGBTQ+ 羽球社群';
 
 export default function Home() {
   const [now, setNow] = useState(() => Date.now());
@@ -82,7 +83,7 @@ export default function Home() {
     <main className={'marketing-page campaign-page ' + (pageView === 'details' ? 'document-view' : 'home-view')}>
       <a href={pageView === 'details' ? '#details-top' : '#top'} className="skip-link">跳至主要內容</a>
       <header className="site-header"><div className="page-shell header-inner">
-        <OfficialBrand homeHref={homeHref} />
+        <div className="header-brand-group"><OfficialBrand homeHref={homeHref} /><p className="header-tagline">{headerTagline.split(' · ').map((line, index) => <span key={line}>{index > 0 && <span className="header-tagline-divider"> · </span>}{line}</span>)}</p></div>
         <nav className="desktop-nav" aria-label="主要導覽"><a href={homeHref + '#prizes'}>抽獎好禮</a><a href={homeHref + '#benefits'}>參與回饋</a><a href={detailsHref()}>完整活動說明</a></nav>
         <RegistrationLink state={registrationState} className="header-action">{registrationState.status === 'open' ? '參與計畫' : marketing.actionLabel}<ArrowRight aria-hidden="true" /></RegistrationLink>
       </div></header>
@@ -90,7 +91,6 @@ export default function Home() {
       {pageView === 'details' ? <ActivityDetails state={registrationState} marketing={marketing} /> : <>
       <section id="top" className="marketing-hero">
         <div className="page-shell hero-layout"><div className="hero-copy">
-          <p className="eyebrow">2027 場地募集 · LGBTQ+ 羽球社群</p>
           <h1 className="hero-rainbow-headline" aria-label="讓我們有一個 可以一起打球的地方">
             {headlineImageFailed ? <span className="headline-fallback" aria-hidden="true">讓我們有一個<span>可以一起</span><span>打球的地方</span></span> : <img src={import.meta.env.BASE_URL + 'marketing/hero-rainbow-headline-v1.webp'} width={1200} height={800} alt="" aria-hidden="true" loading="eager" fetchPriority="high" decoding="async" onError={() => setHeadlineImageFailed(true)} />}
           </h1>

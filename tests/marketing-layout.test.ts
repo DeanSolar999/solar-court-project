@@ -48,6 +48,25 @@ test('rainbow headline keeps one accessible heading and a readable failed-image 
   assert.doesNotMatch(metadata, /讓我們，多一個一起打球的地方/);
 });
 
+test('campaign tagline moves once into a compact branded header without changing registration or footer', () => {
+  const header = page.match(/<header className="site-header">[\s\S]*?<\/header>/)?.[0] ?? '';
+  const hero = page.match(/<section id="top"[\s\S]*?<\/section>/)?.[0] ?? '';
+  assert.equal((page.match(/2027 場地募集 · LGBTQ\+ 羽球社群/g) ?? []).length, 1);
+  assert.match(header, /className="header-brand-group"><OfficialBrand homeHref=\{homeHref\}/);
+  assert.match(header, /headerTagline.split\(' · '\)/);
+  assert.match(header, /className="header-tagline-divider"> · <\/span>/);
+  assert.doesNotMatch(hero, /2027 場地募集|headerTagline|className="eyebrow"/);
+  assert.match(header, /<RegistrationLink state=\{registrationState\} className="header-action">\{registrationState.status === 'open' \? '參與計畫' : marketing.actionLabel\}/);
+  assert.match(css, /\.header-brand-group \.official-brand img \{ width: 3rem; \}/);
+  assert.match(css, /\.header-tagline > span \{ display: block; \}/);
+  assert.match(css, /\.header-tagline-divider \{[^}]*clip-path: inset\(50%\)/);
+  assert.match(css, /\.header-brand-group \{[^}]*flex: 1 1 10rem;[^}]*min-width: 0/);
+  assert.match(css, /\.campaign-page \.header-action \{[^}]*max-width: 100%;[^}]*border-radius: \.7rem/);
+  assert.match(css, /scroll-margin-top: 5.5rem/);
+  assert.match(page, /<OfficialBrand homeHref=\{homeHref\} footer \/>/);
+  assert.match(css, /\.official-brand-footer img \{ width: 6.25rem/);
+});
+
 test('every primary campaign CTA and sticky entry uses the original RegistrationLink gate', () => {
   assert.equal((page.match(/<RegistrationLink state=\{registrationState\}/g) ?? []).length, 3);
   assert.match(sticky, /<RegistrationLink state=\{state\}/);
