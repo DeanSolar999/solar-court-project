@@ -87,6 +87,23 @@ test('three static hero benefit cards highlight the unchanged labels and eligibi
   assert.doesNotMatch(css, /\.hero-benefits[^{}]*:hover|\.hero-benefits[^{}]*\{[^}]*transform:/);
 });
 
+test('footer keeps the original contact and links together to the right of its logo', () => {
+  const footer = page.match(/<footer className="site-footer">[\s\S]*?<\/footer>/)?.[0] ?? '';
+  assert.match(footer, /className="page-shell footer-inner"><OfficialBrand homeHref=\{homeHref\} footer \/><div className="footer-content">/);
+  assert.match(footer, /className="footer-contact"><p>資料管理負責人：\{CONTACTS.managerName\}<\/p><a href=\{CONTACTS.managerPhoneHref\}>\{CONTACTS.managerPhone\}<\/a>/);
+  assert.match(footer, /className="footer-links"><a href=\{detailsHref\('privacy'\)\}>個資告知<\/a><a href=\{detailsHref\('withdrawal'\)\}>終止授權<\/a><a href=\{homeHref\}>返回首頁<\/a>/);
+  assert.equal((footer.match(/<OfficialBrand /g) ?? []).length, 1);
+  assert.equal((footer.match(/<a href=/g) ?? []).length, 4);
+  assert.match(css, /\.footer-inner \{[^}]*display: grid;[^}]*grid-template-columns: max-content minmax\(0, 1fr\)/);
+  assert.match(css, /\.footer-content \{ min-width: 0;[^}]*font-size: \.875rem/);
+  assert.match(css, /\.footer-contact, \.footer-links \{[^}]*flex-wrap: wrap/);
+  assert.match(css, /\.footer-contact > a \{ white-space: nowrap/);
+  assert.match(css, /\.footer-content a \{[^}]*min-height: 2.75rem/);
+  assert.match(css, /\.official-brand-footer img \{ width: 4rem/);
+  assert.match(css, /\.official-brand-footer img \{ width: 6.25rem/);
+  assert.doesNotMatch(css, /\.site-footer > div \{[^}]*flex-wrap: wrap|\.site-footer > div \{[^}]*justify-content: space-between/);
+});
+
 test('every primary campaign CTA and sticky entry uses the original RegistrationLink gate', () => {
   assert.equal((page.match(/<RegistrationLink state=\{registrationState\}/g) ?? []).length, 3);
   assert.match(sticky, /<RegistrationLink state=\{state\}/);

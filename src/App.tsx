@@ -165,7 +165,7 @@ export default function Home() {
       </section>
       </>}
 
-      <footer className="site-footer"><div className="page-shell"><OfficialBrand homeHref={homeHref} footer /><div><p>資料管理負責人：{CONTACTS.managerName}</p><a href={CONTACTS.managerPhoneHref}>{CONTACTS.managerPhone}</a><a href={detailsHref('privacy')}>個資告知</a><a href={detailsHref('withdrawal')}>終止授權</a><a href={homeHref}>返回首頁</a></div></div></footer>
+      <footer className="site-footer"><div className="page-shell footer-inner"><OfficialBrand homeHref={homeHref} footer /><div className="footer-content"><div className="footer-contact"><p>資料管理負責人：{CONTACTS.managerName}</p><a href={CONTACTS.managerPhoneHref}>{CONTACTS.managerPhone}</a></div><div className="footer-links"><a href={detailsHref('privacy')}>個資告知</a><a href={detailsHref('withdrawal')}>終止授權</a><a href={homeHref}>返回首頁</a></div></div></div></footer>
       {pageView === 'home' && <MobileRegistrationCta heroRef={heroActionRef} entryRef={entryRef} label={marketing.actionLabel} enabled={marketing.canRegister} state={registrationState} />}
     </main>
   );

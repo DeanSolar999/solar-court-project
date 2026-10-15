@@ -209,11 +209,11 @@ body { margin: 0; background: var(--background); color: var(--foreground); font-
 .final-registration-action > .marketing-button { width: 100%; }
 .final-registration-action > p { text-align: center; }
 .site-footer { background: var(--ink); color: white; padding-block: 2rem 7rem; }
-.site-footer > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; }
-.site-footer .brand { color: white; }
-.site-footer .brand-mark { background: var(--lime); color: var(--ink); }
-.site-footer > div > div { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; font-size: .875rem; line-height: 1.7; }
-.site-footer > div > div > a { text-decoration: underline; text-underline-offset: .2em; }
+.footer-inner { display: grid; grid-template-columns: max-content minmax(0, 1fr); align-items: center; gap: 1rem; }
+.footer-content { min-width: 0; display: grid; gap: .25rem; font-size: .875rem; line-height: 1.7; }
+.footer-contact, .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; min-width: 0; }
+.footer-content a { display: inline-flex; align-items: center; min-height: 2.75rem; text-decoration: underline; text-underline-offset: .2em; }
+.footer-contact > a { white-space: nowrap; }
 .mobile-sticky-cta { position: fixed; inset-inline: 1rem; bottom: calc(.75rem + env(safe-area-inset-bottom, 0px)); z-index: 40; }
 .mobile-sticky-cta .marketing-button { width: 100%; box-shadow: 0 6px 24px rgb(16 42 36 / .2); }
 .marketing-page :focus-visible { outline: 3px solid #087f63; outline-offset: 5px; }
@@ -226,7 +226,7 @@ body { margin: 0; background: var(--background); color: var(--foreground); font-
 .official-brand { display: grid; place-items: center; flex-shrink: 0; padding: .3rem; border-radius: .6rem; background: var(--ink); }
 .official-brand img { display: block; width: 3.75rem; height: auto; object-fit: contain; }
 .official-brand-footer { padding: .4rem; }
-.official-brand-footer img { width: 6.25rem; }
+.official-brand-footer img { width: 4rem; }
 .campaign-page .header-inner { width: min(100% - 1.5rem, 76rem); gap: .5rem .65rem; padding-block: .4rem; }
 .header-brand-group { display: flex; flex: 1 1 10rem; align-items: center; gap: .5rem; min-width: 0; }
 .header-brand-group .official-brand { padding: .2rem; }
@@ -320,6 +320,8 @@ body { margin: 0; background: var(--background); color: var(--foreground); font-
   .venue-bonus-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: 3rem; }
   .court-bonus { padding: 2rem; }
   .site-footer { padding-bottom: 2rem; }
+  .footer-inner { gap: 1.5rem; }
+  .official-brand-footer img { width: 6.25rem; }
   .mobile-sticky-cta { display: none; }
 }
 
