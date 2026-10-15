@@ -13,12 +13,39 @@ const css = read('src/index.css');
 
 test('four marketing sections keep the long document outside the home branch', () => {
   assert.deepEqual([...page.matchAll(/^      <section id="([^"]+)"/gm)].map((match) => match[1]), ['top', 'prizes', 'benefits', 'register']);
-  assert.ok(page.includes("<h1>讓我們，<span>多一個一起</span><span>打球的地方。</span></h1>"));
+  assert.ok(page.includes('<h1 className="hero-rainbow-headline" aria-label="讓我們有一個 可以一起打球的地方">'));
   assert.ok(page.includes("pageView === 'details' ? <ActivityDetails"));
   assert.doesNotMatch(page, /PRIVACY_NOTICE_ITEMS.map|AUTHORIZED_VENUES.map|<details\b/);
   assert.match(details, /PRIVACY_NOTICE_ITEMS.map/);
   assert.match(details, /AUTHORIZED_VENUES.map/);
   assert.ok(page.includes("marketing.phase === 'unavailable' ? '目前暫停收件；獎品與參加資格請見完整活動辦法。'"));
+});
+
+test('rainbow headline keeps one accessible heading and a readable failed-image fallback', () => {
+  const headline = page.match(/<h1 className="hero-rainbow-headline"[\s\S]*?<\/h1>/)?.[0] ?? '';
+  assert.match(headline, /aria-label="讓我們有一個 可以一起打球的地方"/);
+  assert.match(headline, /headlineImageFailed \?/);
+  assert.match(headline, /讓我們有一個<span>可以一起<\/span><span>打球的地方<\/span>/);
+  assert.match(headline, /onError=\{\(\) => setHeadlineImageFailed\(true\)\}/);
+  assert.match(headline, /alt="" aria-hidden="true" loading="eager" fetchPriority="high"/);
+  assert.ok(headline.includes("import.meta.env.BASE_URL + 'marketing/hero-rainbow-headline-v1.webp'"));
+  assert.match(headline, /width=\{1200\} height=\{800\}/);
+  assert.doesNotMatch(headline, /sr-only/);
+  assert.match(css, /\.hero-rainbow-headline > img \{[^}]*width: 100%;[^}]*height: auto;[^}]*object-fit: contain/);
+  assert.match(css, /\.hero-rainbow-headline > img \{[^}]*aspect-ratio: 3 \/ 2/);
+  const asset = readFileSync(new URL('../public/marketing/hero-rainbow-headline-v1.webp', import.meta.url));
+  assert.equal(asset.subarray(0, 4).toString('ascii'), 'RIFF');
+  assert.equal(asset.subarray(8, 12).toString('ascii'), 'WEBP');
+  const encoding = asset.subarray(12, 16).toString('ascii');
+  assert.ok(encoding === 'VP8L' || encoding === 'VP8X');
+  const losslessBits = encoding === 'VP8L' ? asset.readUInt32LE(21) : 0;
+  const width = encoding === 'VP8L' ? (losslessBits & 0x3fff) + 1 : asset.readUIntLE(24, 3) + 1;
+  const height = encoding === 'VP8L' ? ((losslessBits >>> 14) & 0x3fff) + 1 : asset.readUIntLE(27, 3) + 1;
+  assert.equal(width, 1200);
+  assert.equal(height, 800);
+  const metadata = read('index.html');
+  assert.equal((metadata.match(/讓我們有一個 可以一起打球的地方｜Solar Badminton 2027 場地募集/g) ?? []).length, 3);
+  assert.doesNotMatch(metadata, /讓我們，多一個一起打球的地方/);
 });
 
 test('every primary campaign CTA and sticky entry uses the original RegistrationLink gate', () => {

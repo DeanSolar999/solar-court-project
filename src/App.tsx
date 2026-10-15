@@ -32,6 +32,7 @@ const detailsHref = (id = 'details-top') => import.meta.env.BASE_URL + '?view=de
 
 export default function Home() {
   const [now, setNow] = useState(() => Date.now());
+  const [headlineImageFailed, setHeadlineImageFailed] = useState(false);
   const [location, setLocation] = useState(() => ({ search: window.location.search, hash: window.location.hash }));
   const pageView = getPageView(location.search, location.hash);
   const registrationState = getRegistrationState(undefined, now);
@@ -90,7 +91,9 @@ export default function Home() {
       <section id="top" className="marketing-hero">
         <div className="page-shell hero-layout"><div className="hero-copy">
           <p className="eyebrow">2027 場地募集 · LGBTQ+ 羽球社群</p>
-          <h1>讓我們，<span>多一個一起</span><span>打球的地方。</span></h1>
+          <h1 className="hero-rainbow-headline" aria-label="讓我們有一個 可以一起打球的地方">
+            {headlineImageFailed ? <span className="headline-fallback" aria-hidden="true">讓我們有一個<span>可以一起</span><span>打球的地方</span></span> : <img src={import.meta.env.BASE_URL + 'marketing/hero-rainbow-headline-v1.webp'} width={1200} height={800} alt="" aria-hidden="true" loading="eager" fetchPriority="high" decoding="async" onError={() => setHeadlineImageFailed(true)} />}
+          </h1>
           <p className="hero-description">你的一份支持，讓曜日球友多一次相聚的機會。</p>
           <ul className="hero-benefits" aria-label="參與亮點">
             <li><strong>{marketing.firstDrawOpen ? '30 份' : '首波抽獎'}</strong><span>{marketing.firstDrawOpen ? '抽獎好禮' : marketing.phase === 'unavailable' ? '查看活動辦法' : '資格已截止'}</span></li>
