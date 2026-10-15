@@ -96,8 +96,8 @@ export default function Home() {
           </h1>
           <p className="hero-description">你的一份支持，讓曜日球友多一次相聚的機會。</p>
           <ul className="hero-benefits" aria-label="參與亮點">
-            <li><strong>{marketing.firstDrawOpen ? '30 份' : '首波抽獎'}</strong><span>{marketing.firstDrawOpen ? '抽獎好禮' : marketing.phase === 'unavailable' ? '查看活動辦法' : '資格已截止'}</span></li>
-            <li><strong>季繳優先</strong><span>登記資格</span></li><li><strong>2027</strong><span>臨打優惠</span></li>
+            <li><CampaignIcon name="draw" /><strong>{marketing.firstDrawOpen ? '30 份' : '首波抽獎'}</strong><span>{marketing.firstDrawOpen ? '抽獎好禮' : marketing.phase === 'unavailable' ? '查看活動辦法' : '資格已截止'}</span></li>
+            <li><CampaignIcon name="priority" /><strong>季繳優先</strong><span>登記資格</span></li><li><CampaignIcon name="discount" /><strong>2027</strong><span>臨打優惠</span></li>
           </ul>
           <div ref={heroActionRef} className="hero-actions" id="hero-action">
             <RegistrationLink state={registrationState} className="marketing-button">{marketing.actionLabel}<ArrowRight aria-hidden="true" /></RegistrationLink>

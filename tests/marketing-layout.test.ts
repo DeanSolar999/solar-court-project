@@ -67,6 +67,26 @@ test('campaign tagline moves once into a compact branded header without changing
   assert.match(css, /\.official-brand-footer img \{ width: 6.25rem/);
 });
 
+test('three static hero benefit cards highlight the unchanged labels and eligibility states', () => {
+  const benefits = page.match(/<ul className="hero-benefits"[\s\S]*?<\/ul>/)?.[0] ?? '';
+  assert.equal((benefits.match(/<li>/g) ?? []).length, 3);
+  assert.deepEqual([...benefits.matchAll(/<CampaignIcon name="([^"]+)" \/>/g)].map((match) => match[1]), ['draw', 'priority', 'discount']);
+  assert.ok(benefits.includes("<strong>{marketing.firstDrawOpen ? '30 份' : '首波抽獎'}</strong>"));
+  assert.ok(benefits.includes("<span>{marketing.firstDrawOpen ? '抽獎好禮' : marketing.phase === 'unavailable' ? '查看活動辦法' : '資格已截止'}</span>"));
+  assert.match(benefits, /<strong>季繳優先<\/strong><span>登記資格<\/span>/);
+  assert.match(benefits, /<strong>2027<\/strong><span>臨打優惠<\/span>/);
+  assert.doesNotMatch(benefits, /<a\b|<button\b|onClick|tabIndex/);
+  assert.match(css, /\.hero-benefits \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(css, /\.hero-benefits li \{[^}]*min-width: 0;[^}]*min-height: 8.5rem;[^}]*border-radius: 1rem;[^}]*background: #f1f8cf/);
+  assert.match(css, /\.hero-benefits li:nth-child\(2\) \{ background: #fff0cb/);
+  assert.match(css, /\.hero-benefits li:nth-child\(3\) \{ background: #e2f2e8/);
+  assert.match(css, /\.hero-benefits \.campaign-icon \{ width: 3.25rem/);
+  assert.match(css, /\.hero-benefits \.campaign-icon \{ width: 4rem/);
+  assert.match(css, /\.hero-benefits strong \{[^}]*font-size: 1.125rem/);
+  assert.match(css, /\.hero-benefits strong \{ font-size: 1.5rem/);
+  assert.doesNotMatch(css, /\.hero-benefits[^{}]*:hover|\.hero-benefits[^{}]*\{[^}]*transform:/);
+});
+
 test('every primary campaign CTA and sticky entry uses the original RegistrationLink gate', () => {
   assert.equal((page.match(/<RegistrationLink state=\{registrationState\}/g) ?? []).length, 3);
   assert.match(sticky, /<RegistrationLink state=\{state\}/);
