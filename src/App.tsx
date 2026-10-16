@@ -3,7 +3,7 @@ import { ArrowRight, Trophy } from 'lucide-react';
 import { RegistrationLink } from '@/components/registration-link';
 import { MobileRegistrationCta } from '@/components/mobile-registration-cta';
 import { CampaignIcon, OfficialBrand } from '@/components/campaign-visuals';
-import { PixelCampaignHero } from '@/components/pixel-campaign-hero';
+import { WarmCampaignHero } from '@/components/warm-campaign-hero';
 import { ActivityDetails } from '@/pages/activity-details';
 import { CONTACTS } from '@/lib/consent';
 import { getRegistrationState, REGISTRATION_CLOSES_AT } from '@/lib/registration-config';
@@ -13,19 +13,19 @@ import { getPageView } from '@/lib/page-view';
 const prizes = [
   {
     count: '03', name: '高級球袋', note: '三名', tone: 'lime',
-    image: 'prizes/bag-illustration-v1.webp', alt: '高級球袋的 AI 生成示意圖，非實際獎品',
+    image: 'prizes/bag-warm-v1.webp', alt: '高級球袋的 AI 生成示意圖，非實際獎品',
   },
   {
     count: '06', name: '運動毛巾', note: '六名', tone: 'paper',
-    image: 'prizes/towel-illustration-v1.webp', alt: '運動毛巾的 AI 生成示意圖，非實際獎品',
+    image: 'prizes/towel-warm-v1.webp', alt: '運動毛巾的 AI 生成示意圖，非實際獎品',
   },
   {
     count: '10', name: '運動襪', note: '十名', tone: 'paper',
-    image: 'prizes/socks-illustration-v1.webp', alt: '運動襪的 AI 生成示意圖，非實際獎品',
+    image: 'prizes/socks-warm-v1.webp', alt: '運動襪的 AI 生成示意圖，非實際獎品',
   },
   {
     count: '10', name: '曜日球衣', note: '十名', tone: 'paper',
-    image: 'prizes/jersey-illustration-v1.webp', alt: '曜日球衣的 AI 生成示意圖，非實際獎品',
+    image: 'prizes/jersey-warm-v1.webp', alt: '曜日球衣的 AI 生成示意圖，非實際獎品',
   },
 ];
 
@@ -90,8 +90,8 @@ export default function Home() {
 
       {pageView === 'details' ? <ActivityDetails state={registrationState} marketing={marketing} /> : <>
       <section id="top" className="marketing-hero">
-        <PixelCampaignHero state={registrationState} marketing={marketing} heroActionRef={heroActionRef} detailsHref={detailsHref()} />
-        <div className="page-shell pixel-qualification"><p className="hero-qualification">{marketing.qualification}</p></div>
+        <WarmCampaignHero state={registrationState} marketing={marketing} heroActionRef={heroActionRef} detailsHref={detailsHref()} />
+        <div className="page-shell warm-qualification"><p className="hero-qualification">{marketing.qualification}</p></div>
       </section>
 
       <section id="prizes" className="marketing-section prizes-section">

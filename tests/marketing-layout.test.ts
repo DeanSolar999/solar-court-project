@@ -5,7 +5,7 @@ import { getPageView } from '../src/lib/page-view.ts';
 
 const read = (path: string) => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const page = read('src/App.tsx');
-const pixel = read('src/components/pixel-campaign-hero.tsx');
+const warm = read('src/components/warm-campaign-hero.tsx');
 const details = read('src/pages/activity-details.tsx');
 const entry = read('src/components/registration-form.tsx');
 const sticky = read('src/components/mobile-registration-cta.tsx');
@@ -14,8 +14,8 @@ const css = read('src/index.css');
 
 test('four marketing sections keep the long document outside the home branch', () => {
   assert.deepEqual([...page.matchAll(/^      <section id="([^"]+)"/gm)].map((match) => match[1]), ['top', 'prizes', 'benefits', 'register']);
-  assert.match(page, /<PixelCampaignHero state=\{registrationState\}/);
-  assert.match(pixel, /<h1>讓我們有一個 可以一起打球的地方<\/h1>/);
+  assert.match(page, /<WarmCampaignHero state=\{registrationState\}/);
+  assert.match(warm, /<h1>讓我們有一個 可以一起打球的地方<\/h1>/);
   assert.ok(page.includes("pageView === 'details' ? <ActivityDetails"));
   assert.doesNotMatch(page, /PRIVACY_NOTICE_ITEMS.map|AUTHORIZED_VENUES.map|<details\b/);
   assert.match(details, /PRIVACY_NOTICE_ITEMS.map/);
@@ -23,11 +23,11 @@ test('four marketing sections keep the long document outside the home branch', (
   assert.ok(page.includes("marketing.phase === 'unavailable' ? '目前暫停收件；獎品與參加資格請見完整活動辦法。'"));
 });
 
-test('pixel hero preserves the existing headline and metadata while keeping the older artwork', () => {
-  assert.equal((pixel.match(/<h1>/g) ?? []).length, 1);
-  assert.match(pixel, /imageFailed \? ' pixel-scene-fallback'/);
-  assert.match(pixel, /onError=\{\(\) => setImageFailed\(true\)\}/);
-  assert.match(css, /\.pixel-scene-fallback \.pixel-introduction, \.pixel-scene-fallback \.pixel-link-label \{[^}]*clip-path: none/);
+test('warm hero preserves the existing headline and metadata while keeping the older artwork', () => {
+  assert.equal((warm.match(/<h1>/g) ?? []).length, 1);
+  assert.match(warm, /imageFailed \? ' warm-scene-fallback'/);
+  assert.match(warm, /onError=\{\(\) => setImageFailed\(true\)\}/);
+  assert.match(css, /\.warm-scene-fallback \.warm-introduction, \.warm-scene-fallback \.warm-link-label \{[^}]*clip-path: none/);
   const asset = readFileSync(new URL('../public/marketing/hero-rainbow-headline-v1.webp', import.meta.url));
   assert.equal(asset.subarray(0, 4).toString('ascii'), 'RIFF');
   assert.equal(asset.subarray(8, 12).toString('ascii'), 'WEBP');
@@ -62,17 +62,17 @@ test('campaign tagline moves once into a compact branded header without changing
   assert.match(css, /\.official-brand-footer img \{ width: 6.25rem/);
 });
 
-test('three pixel benefit hotspots retain labels and eligibility states with real destination cards', () => {
-  const benefits = pixel;
+test('three warm benefit hotspots retain labels and eligibility states with real destination cards', () => {
+  const benefits = warm;
   assert.ok(benefits.includes("<strong>{marketing.firstDrawOpen ? '30 份' : '首波抽獎'}</strong>"));
   assert.ok(benefits.includes("<span>{marketing.firstDrawOpen ? '抽獎好禮' : marketing.phase === 'unavailable' ? '查看活動辦法' : '資格已截止'}</span>"));
   assert.match(benefits, /<strong>季繳優先<\/strong><span>登記資格<\/span>/);
   assert.match(benefits, /<strong>2027<\/strong><span>臨打優惠<\/span>/);
   for (const id of ['prizes', 'priority-benefit', 'discount-benefit']) {
-    assert.ok(pixel.includes('href="#' + id + '"'));
+    assert.ok(warm.includes('href="#' + id + '"'));
     assert.ok(page.includes('id="' + id + '"'));
   }
-  assert.doesNotMatch(pixel, /tabIndex|onClick/);
+  assert.doesNotMatch(warm, /tabIndex|onClick/);
 });
 
 test('footer keeps the original contact and links together to the right of its logo', () => {
@@ -94,8 +94,8 @@ test('footer keeps the original contact and links together to the right of its l
 
 test('every primary campaign CTA and sticky entry uses the original RegistrationLink gate', () => {
   assert.equal((page.match(/<RegistrationLink state=\{registrationState\}/g) ?? []).length, 2);
-  assert.match(pixel, /<RegistrationLink state=\{state\}/);
-  assert.match(pixel, /ref=\{heroActionRef\} className="pixel-registration" id="hero-action"/);
+  assert.match(warm, /<RegistrationLink state=\{state\}/);
+  assert.match(warm, /ref=\{heroActionRef\} className="warm-registration" id="hero-action"/);
   assert.match(sticky, /<RegistrationLink state=\{state\}/);
   assert.doesNotMatch(page + sticky, /href="#register"|href="https:\/\/script.google.com/);
   assert.match(page, /getRegistrationState\(undefined, now\)/);
@@ -138,12 +138,12 @@ test('independent document retains the full ten notices, four exact consents, co
 test('campaign visuals retain the official logo and existing adult illustration assets', () => {
   for (const name of ['community', 'registration', 'court-support']) {
     if (name !== 'community') assert.ok(details.includes('name="' + name + '"'));
-    const asset = readFileSync(new URL('../public/marketing/' + name + '-illustration-v2.webp', import.meta.url));
+    const asset = readFileSync(new URL('../public/marketing/' + name + (name === 'community' ? '-illustration-v2.webp' : '-illustration-warm-v1.webp'), import.meta.url));
     assert.equal(asset.subarray(0, 4).toString('ascii'), 'RIFF');
     assert.equal(asset.subarray(8, 12).toString('ascii'), 'WEBP');
   }
   assert.match(visuals, /AI 概念插畫，非實際球友或場地/);
-  assert.ok(visuals.includes("name + '-illustration-v2.webp'"));
+  assert.ok(visuals.includes("name + '-illustration-warm-v1.webp'"));
   assert.ok(visuals.includes("import.meta.env.BASE_URL + 'brand/solar-badminton-logo.svg'"));
   assert.match(visuals, /width=\{657\} height=\{683\}/);
   assert.match(css, /\.official-brand img \{[^}]*width: 3.75rem;[^}]*height: auto;[^}]*object-fit: contain/);
@@ -151,7 +151,7 @@ test('campaign visuals retain the official logo and existing adult illustration 
   assert.doesNotMatch(page, /brand-mark|>曜<|<svg/);
   for (const name of ['draw', 'priority', 'discount', 'bonus', 'community']) {
     assert.ok(page.includes('<CampaignIcon name="' + name + '"'));
-    const asset = readFileSync(new URL('../public/icons/' + name + '-v1.webp', import.meta.url));
+    const asset = readFileSync(new URL('../public/icons/' + name + '-warm-v1.webp', import.meta.url));
     assert.equal(asset.subarray(0, 4).toString('ascii'), 'RIFF');
     assert.equal(asset.subarray(8, 12).toString('ascii'), 'WEBP');
   }

@@ -23,8 +23,8 @@ test('keeps all four secondary prizes and the original thirty-prize total', () =
 
 test('ships a distinct WebP illustration with descriptive non-product alt text for every card', () => {
   assert.deepEqual(prizes.map(({ image }) => image), [
-    'prizes/bag-illustration-v1.webp', 'prizes/towel-illustration-v1.webp',
-    'prizes/socks-illustration-v1.webp', 'prizes/jersey-illustration-v1.webp',
+    'prizes/bag-warm-v1.webp', 'prizes/towel-warm-v1.webp',
+    'prizes/socks-warm-v1.webp', 'prizes/jersey-warm-v1.webp',
   ]);
   for (const prize of prizes) {
     assert.ok(prize.image && prize.alt && prize.name);
